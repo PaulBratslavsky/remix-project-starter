@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "@remix-run/react";
 
 import { LinksFunction } from "@remix-run/node";
@@ -24,6 +25,7 @@ export const links: LinksFunction = () => {
 };
 
 export function Layout({ children }: { readonly children: React.ReactNode }) {
+  const isDashboard = useLocation().pathname.startsWith("/dashboard");
   return (
     <html lang="en">
       <head>
@@ -33,11 +35,9 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
         <Links />
       </head>
       <body className="min-h-screen">
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Footer />
+        <Header isDashboard={isDashboard} />
+        <main>{children}</main>
+        {!isDashboard && <Footer />}
         <ScrollRestoration />
         <Scripts />
       </body>

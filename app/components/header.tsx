@@ -2,9 +2,12 @@ import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
 
-export function Header() {
+import { cn } from "~/lib/utils";
+
+
+export function Header({ isDashboard }: { readonly isDashboard: boolean }) {
   return (
-    <header className="container flex items-center justify-between gap-10 py-4">
+    <header className={cn("flex items-center justify-between gap-10 py-4", isDashboard ? "px-6": "container")}>
       <Link to="/" className="flex items-center gap-3">
         <svg fill="none" viewBox="0 0 238 238" className="size-6 text-primary">
           <path
