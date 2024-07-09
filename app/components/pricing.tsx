@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@remix-run/react";
 import { Check } from "lucide-react";
 
 import { Card, CardContent } from "~/components/ui/card";
@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 
 export function Pricing() {
   return (
-    <section className="container flex flex-col items-center gap-6 py-24 sm:gap-7">
+    <section className="container flex flex-col items-center gap-6 py-18 sm:gap-7">
       <div className="flex flex-col gap-3">
         <span className="font-bold uppercase text-primary text-center">Pricing</span>
         <h2 className="font-heading text-3xl font-semibold sm:text-4xl text-center">
@@ -27,7 +27,7 @@ export function Pricing() {
                 <span className="text-sm"> /month</span>
               </div>
               <Button size="lg" asChild className="mt-10 w-full">
-                <Link href="#">Get started</Link>
+                <Link to="#">Get started</Link>
               </Button>
             </CardContent>
             <ul className="space-y-2 px-7 py-10">
@@ -67,7 +67,7 @@ export function Pricing() {
                 <span className="text-sm"> /month</span>
               </div>
               <Button size="lg" asChild className="mt-10 w-full">
-                <Link href="#">Get started</Link>
+                <Link to="#">Get started</Link>
               </Button>
             </CardContent>
             <ul className="space-y-2 px-7 py-10">
@@ -104,7 +104,7 @@ export function Pricing() {
                 <span className="text-sm"> /month</span>
               </div>
               <Button size="lg" asChild className="mt-10 w-full">
-                <Link href="#">Get started</Link>
+                <Link to="#">Get started</Link>
               </Button>
             </CardContent>
             <ul className="space-y-2 px-7 py-10">

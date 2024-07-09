@@ -4,10 +4,14 @@ import { MobileNavbar } from "~/components/mobile-navbar";
 
 import { cn } from "~/lib/utils";
 
-
 export function Header({ isDashboard }: { readonly isDashboard: boolean }) {
   return (
-    <header className={cn("flex items-center justify-between gap-10 py-4", isDashboard ? "px-6": "container")}>
+    <header
+      className={cn(
+        "flex items-center justify-between gap-10 py-4",
+        isDashboard ? "px-6" : "container"
+      )}
+    >
       <Link to="/" className="flex items-center gap-3">
         <svg fill="none" viewBox="0 0 238 238" className="size-6 text-primary">
           <path
@@ -24,28 +28,24 @@ export function Header({ isDashboard }: { readonly isDashboard: boolean }) {
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
           <Link
-            to="/about"
+            to="courses"
             className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
           >
-            About
+            Courses
           </Link>
+
           <Link
-            to="/docs"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Docs
-          </Link>
-          <Link
-            to="/blog"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Blog
-          </Link>
-          <Link
-            to="/pricing"
+            to="pricing"
             className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
           >
             Pricing
+          </Link>
+
+          <Link
+            to="blog"
+            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
+          >
+            Blog
           </Link>
         </nav>
         <div className="hidden items-center gap-2 md:flex">
@@ -60,28 +60,29 @@ export function Header({ isDashboard }: { readonly isDashboard: boolean }) {
         <div className="rounded-b-lg bg-background py-4 container text-foreground shadow-xl">
           <nav className="flex flex-col gap-1 pt-2">
             <Link
-              to="/about"
+              to="/"
               className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
             >
-              About
+              Home
             </Link>
             <Link
-              to="/docs"
+              to="courses"
               className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
             >
-              Docs
+              Courses
             </Link>
+
             <Link
-              to="/blog"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Blog
-            </Link>
-            <Link
-              to="/pricing"
+              to="pricing"
               className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
             >
               Pricing
+            </Link>
+            <Link
+              to="blog"
+              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
+            >
+              Blog
             </Link>
             <Button size="lg" asChild className="mt-2 w-full">
               <Link to="dashboard" className="cursor-pointer">

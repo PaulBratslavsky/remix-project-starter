@@ -1,8 +1,8 @@
 import { CourseSection } from "~/components/course-section";
-export default function DashboardIndexRoute() {
+export default function CoursesRoute() {
   return (
     <div className="flex justify-center items-center">
-      <CourseSection />
+        <CourseSection />
     </div>
   );
 }
