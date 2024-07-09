@@ -22,6 +22,7 @@
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.1.6",
     "isbot": "^4.1.0",
     "lucide-react": "^0.403.0",
     "react": "^18.2.0",
