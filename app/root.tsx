@@ -13,6 +13,8 @@ import "./tailwind.css";
 import faviconUrl from "~/assets/favicon.svg";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
+import { Dashboard } from "examples/example-1";
+import { DashboardHeader } from "./components/dashboard-header";
 
 export const links: LinksFunction = () => {
   return [
@@ -35,7 +37,7 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
         <Links />
       </head>
       <body className="min-h-screen">
-        <Header isDashboard={isDashboard} />
+        { isDashboard ?  <DashboardHeader /> : <Header /> }
         <main>{children}</main>
         {!isDashboard && <Footer />}
         <ScrollRestoration />

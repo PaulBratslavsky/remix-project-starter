@@ -16,7 +16,7 @@ export function BlogSection() {
         Learn how to build beautiful landing pages fast.
       </p>
       <div className="mt-6 grid auto-rows-fr grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
-        <Link to="#">
+        <Link to="some-slug-1">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
               <div className="relative h-52 w-full">
@@ -46,7 +46,7 @@ export function BlogSection() {
             </CardContent>
           </Card>
         </Link>
-        <Link to="#">
+        <Link to="some-slug-2">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
               <div className="relative h-52 w-full">
@@ -76,7 +76,7 @@ export function BlogSection() {
             </CardContent>
           </Card>
         </Link>
-        <Link to="#">
+        <Link to="some-slug-3">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
               <div className="relative h-52 w-full">

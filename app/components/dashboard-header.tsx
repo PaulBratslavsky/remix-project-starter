@@ -2,9 +2,11 @@ import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
 
-export function Header() {
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+
+export function DashboardHeader() {
   return (
-    <header className="flex items-center justify-between gap-10 py-4 container">
+    <header className="flex items-center justify-between gap-10 py-4 px-6">
       <Link to="/" className="flex items-center gap-3">
         <svg fill="none" viewBox="0 0 238 238" className="size-6 text-primary">
           <path
@@ -21,32 +23,21 @@ export function Header() {
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
           <Link
-            to="courses"
+            to="/dashboard"
             className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
           >
-            Courses
-          </Link>
-
-          <Link
-            to="pricing"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Pricing
-          </Link>
-
-          <Link
-            to="blog"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Blog
+            My Courses
           </Link>
         </nav>
         <div className="hidden items-center gap-2 md:flex">
-          <Button asChild>
-            <Link to="auth/signup" className="cursor-pointer">
-              Sign Up
+          <Button asChild className="w-8 h-8 rounded-full">
+            <Link to="dashboard" className="cursor-pointer">
+              PB
             </Link>
           </Button>
+          <Link to="/" className="cursor-pointer">
+            <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
+          </Link>
         </div>
       </div>
       <MobileNavbar>
@@ -78,9 +69,18 @@ export function Header() {
               Blog
             </Link>
             <Button size="lg" asChild className="mt-2 w-full">
-              <Link to="auth/signup" className="cursor-pointer">
-                Sign Up
+              <Link to="dashboard" className="cursor-pointer">
+                Paul
               </Link>
+            </Button>
+
+            <Button size="lg" asChild className="mt-2 w-full bg-muted">
+
+            <Link to="/" className="cursor-pointer">
+              Log Out
+              <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
+            </Link>
+
             </Button>
           </nav>
         </div>

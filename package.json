@@ -11,6 +11,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
     "@mux/mux-player-react": "^2.7.0",
     "@prisma/client": "^5.16.1",
     "@radix-ui/react-label": "^2.1.0",
