@@ -11,7 +11,7 @@ import { Card, CardContent } from "~/components/ui/card";
 
 export function CourseSection() {
   return (
-    <section className="container flex flex-col items-center gap-6 py-18 sm:gap-7">
+    <section className="container h-full flex flex-col items-center gap-6 py-20 sm:gap-7">
       <div className="flex flex-col gap-3">
         <span className="font-bold uppercase text-primary text-center">
           Courses

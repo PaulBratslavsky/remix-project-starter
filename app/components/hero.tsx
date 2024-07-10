@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="container flex flex-col items-center gap-10 pb-28 pt-20 sm:gap-14 lg:flex-row">
+    <section className="container h-full flex flex-col items-center gap-10 pb-28 pt-20 sm:gap-14 lg:flex-row">
       <div className="flex flex-1 flex-col items-center gap-8 lg:items-start lg:gap-10">
         <div className="flex cursor-pointer items-center gap-1 rounded-full border bg-secondary px-3 py-0.5 hover:bg-secondary/60">
           <span className="text-sm text-secondary-foreground">
