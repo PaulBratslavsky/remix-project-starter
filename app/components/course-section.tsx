@@ -31,7 +31,7 @@ export function CourseSection() {
         <CarouselContent className="pb-4">
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="h-full p-1">
-              <Link to="lesson-1">
+              <Link to="/dashboard/course-1">
                 <Card className="h-full shadow-lg">
                   <CardContent className="flex h-full flex-col items-start gap-5 p-5">
                     <div className="relative h-52 w-full">
@@ -65,7 +65,7 @@ export function CourseSection() {
           </CarouselItem>
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="h-full p-1">
-              <Link to="lesson-2">
+              <Link to="/dashboard/course-2">
                 <Card className="h-full shadow-lg">
                   <CardContent className="flex h-full flex-col items-start gap-5 p-5">
                     <div className="relative h-52 w-full">
@@ -100,7 +100,7 @@ export function CourseSection() {
           </CarouselItem>
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="h-full p-1">
-              <Link to="lesson-3">
+              <Link to="/dashboard/course-3">
                 <Card className="h-full shadow-lg">
                   <CardContent className="flex h-full flex-col items-start gap-5 p-5">
                     <div className="relative h-52 w-full">
@@ -135,7 +135,7 @@ export function CourseSection() {
           </CarouselItem>
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="h-full p-1">
-              <Link to="lesson-4">
+              <Link to="/dashboard/course-4">
                 <Card className="h-full shadow-lg">
                   <CardContent className="flex h-full flex-col items-start gap-5 p-5">
                     <div className="relative h-52 w-full">
@@ -169,7 +169,7 @@ export function CourseSection() {
           </CarouselItem>
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="h-full p-1">
-              <Link to="lesson-5">
+              <Link to="/dashboard/course-5">
                 <Card className="h-full shadow-lg">
                   <CardContent className="flex h-full flex-col items-start gap-5 p-5">
                     <div className="relative h-52 w-full">
