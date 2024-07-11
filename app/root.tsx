@@ -35,8 +35,8 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen">
-        <div className="flex flex-col h-screen justify-between">
+      <body>
+        <div className="flex flex-col min-h-screen justify-between">
           {isDashboard ? <DashboardHeader /> : <Header />}
           <main className="mb-auto h-full">{children}</main>
           {!isDashboard && <Footer />}
