@@ -19,7 +19,7 @@ export function BlogSection() {
         <Link to="some-slug-1">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
-              <div className="relative h-52 w-full">
+              <div className="relative h-64 w-full">
                 <img
                   src="https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="How to build a beautiful landing page in minutes"
@@ -49,7 +49,7 @@ export function BlogSection() {
         <Link to="some-slug-2">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
-              <div className="relative h-52 w-full">
+              <div className="relative h-64 w-full">
                 <img
                   src="https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="How to generate the perfect theme for your website with AI"
@@ -79,7 +79,7 @@ export function BlogSection() {
         <Link to="some-slug-3">
           <Card className="h-full shadow-lg">
             <CardContent className="flex h-full flex-col items-start gap-5 px-0">
-              <div className="relative h-52 w-full">
+              <div className="relative h-64 w-full">
                 <img
                   src="https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="How to build at the speed of no-code without customization limits"
