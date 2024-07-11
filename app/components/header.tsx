@@ -6,7 +6,7 @@ import { NavLinkItem } from "~/components/nav-link-item";
 const navItems = [
   {
     id: 1,
-    href: "/",
+    href: "/courses",
     text: "Courses",
     isExternal: false,
   },
