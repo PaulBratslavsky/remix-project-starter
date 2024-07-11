@@ -1,9 +1,18 @@
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
+import { NavLinkItem } from "~/components/nav-link-item";
 
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
+const navItems = [
+  {
+    id: 1,
+    href: "/dashboard",
+    text: "Courses",
+    isExternal: false,
+  }
+]
 export function DashboardHeader() {
   return (
     <header className="flex items-center justify-between gap-10 py-4 px-6">
@@ -22,12 +31,15 @@ export function DashboardHeader() {
       </Link>
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
-          <Link
-            to="/dashboard"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            My Courses
-          </Link>
+        {navItems.map((navItem) => (
+              <NavLinkItem
+                to={navItem.href}
+                isExternal={navItem.isExternal}
+                key={navItem.id}
+              >
+                {navItem.text}{" "}
+              </NavLinkItem>
+            ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild className="w-8 h-8 rounded-full">
@@ -43,31 +55,15 @@ export function DashboardHeader() {
       <MobileNavbar>
         <div className="rounded-b-lg bg-background py-4 container text-foreground shadow-xl">
           <nav className="flex flex-col gap-1 pt-2">
-            <Link
-              to="/"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Home
-            </Link>
-            <Link
-              to="courses"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Courses
-            </Link>
-
-            <Link
-              to="pricing"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Pricing
-            </Link>
-            <Link
-              to="blog"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Blog
-            </Link>
+          {navItems.map((navItem) => (
+              <NavLinkItem
+                to={navItem.href}
+                isExternal={navItem.isExternal}
+                key={navItem.id}
+              >
+                {navItem.text}{" "}
+              </NavLinkItem>
+            ))}
             <Button size="lg" asChild className="mt-2 w-full">
               <Link to="dashboard" className="cursor-pointer">
                 Paul

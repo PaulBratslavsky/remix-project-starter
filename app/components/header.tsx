@@ -1,6 +1,28 @@
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
+import { NavLinkItem } from "~/components/nav-link-item";
+
+const navItems = [
+  {
+    id: 1,
+    href: "/",
+    text: "Courses",
+    isExternal: false,
+  },
+  {
+    id: 2,
+    href: "/pricing",
+    text: "Pricing",
+    isExternal: false,
+  },
+  {
+    id: 3,
+    href: "/blog",
+    text: "Blog",
+    isExternal: false,
+  },
+];
 
 export function Header() {
   return (
@@ -20,26 +42,15 @@ export function Header() {
       </Link>
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
-          <Link
-            to="courses"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Courses
-          </Link>
-
-          <Link
-            to="pricing"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Pricing
-          </Link>
-
-          <Link
-            to="blog"
-            className="flex cursor-pointer items-center text-lg font-medium text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-          >
-            Blog
-          </Link>
+          {navItems.map((navItem) => (
+            <NavLinkItem
+              to={navItem.href}
+              isExternal={navItem.isExternal}
+              key={navItem.id}
+            >
+              {navItem.text}{" "}
+            </NavLinkItem>
+          ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild>
@@ -52,31 +63,15 @@ export function Header() {
       <MobileNavbar>
         <div className="rounded-b-lg bg-background py-4 container text-foreground shadow-xl">
           <nav className="flex flex-col gap-1 pt-2">
-            <Link
-              to="/"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Home
-            </Link>
-            <Link
-              to="courses"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Courses
-            </Link>
-
-            <Link
-              to="pricing"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Pricing
-            </Link>
-            <Link
-              to="blog"
-              className="flex w-full cursor-pointer items-center rounded-md p-2 font-medium text-muted-foreground hover:text-foreground"
-            >
-              Blog
-            </Link>
+            {navItems.map((navItem) => (
+              <NavLinkItem
+                to={navItem.href}
+                isExternal={navItem.isExternal}
+                key={navItem.id}
+              >
+                {navItem.text}{" "}
+              </NavLinkItem>
+            ))}
             <Button size="lg" asChild className="mt-2 w-full">
               <Link to="auth/signup" className="cursor-pointer">
                 Sign Up
