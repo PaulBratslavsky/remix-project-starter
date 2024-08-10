@@ -15,13 +15,14 @@ export default function LoginRoute() {
             Create your account to get started.
           </p>
         </div>
-        <div className="grid gap-4">
+        <div className="grid gap-4 mt-6">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="m@example.com"
+              className=""
               required
             />
           </div>

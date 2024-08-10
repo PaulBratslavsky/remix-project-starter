@@ -1,6 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { VideoPlayer } from "~/components/VideoPlayer";
+import { VideoPlayer } from "~/components/video-player";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   return json({ params });
