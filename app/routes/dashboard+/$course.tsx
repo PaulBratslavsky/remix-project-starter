@@ -1,5 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link, Outlet } from "@remix-run/react";
+import { useLoaderData, Link, Outlet, useParams } from "@remix-run/react";
+import { cn } from "~/lib/utils"
 
 import { TooltipProvider } from "~/components/ui/tooltip";
 
@@ -12,12 +13,19 @@ import {
 import { Separator } from "~/components/ui/separator";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  return json({ params });
+  console.log(params.lesson);
+  return json({ data: mockData });
 }
 
 export default function DashboardRoute() {
-  const { params } = useLoaderData<typeof loader>();
-  console.log(params);
+  const data = useLoaderData<typeof loader>();
+  const params = useParams();
+
+  console.log(params)
+  if (!data) return null;
+  const courseList = data?.data;
+
+  console.log(courseList);
   return (
     <TooltipProvider delayDuration={0}>
       <Separator />
@@ -28,18 +36,22 @@ export default function DashboardRoute() {
             <div className="rounded p-4 overflow-auto">
               <h2 className="text-xl font-bold mb-4">Lessons</h2>
               <div className="space-y-2">
-                <Link
-                  to="lesson-1"
-                  className="flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors"
+                { courseList.map((lesson) => {
+                  const isSelected = params.lesson === lesson.id;
+                  console.log(isSelected)
+                  return <Link 
+                  key={lesson.id}
+                  to={lesson.id}
+                  className={cn("flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors", isSelected ? "bg-muted" : "")}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
+                    <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
                       1
                     </div>
                     <div>
-                      <h3 className="font-medium">Introduction to React</h3>
+                      <h3 className="font-medium">{lesson.heading}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Learn the basics of React
+                        {lesson.text}
                       </p>
                     </div>
                   </div>
@@ -47,82 +59,10 @@ export default function DashboardRoute() {
                     <CheckIcon className="w-5 h-5" />
                   </div>
                 </Link>
-                <Link
-                  to="lesson-2"
-                  className="flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      2
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Components and Props</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Understand components and props
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    <CheckIcon className="w-5 h-5" />
-                  </div>
-                </Link>
-                <Link
-                  to="lesson-3"
-                  className="flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      3
-                    </div>
-                    <div>
-                      <h3 className="font-medium">State and Lifecycle</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Learn about state and lifecycle methods
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    <CheckIcon className="w-5 h-5" />
-                  </div>
-                </Link>
-                <Link
-                  to="lesson-4"
-                  className="flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      4
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Handling Events</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Learn how to handle events in React
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    <CheckIcon className="w-5 h-5" />
-                  </div>
-                </Link>
-                <Link
-                  to="lesson-5"
-                  className="flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      5
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Conditional Rendering</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Learn how to conditionally render components
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    <CheckIcon className="w-5 h-5" />
-                  </div>
-                </Link>
+              
+                }
+              
+              )}
               </div>
             </div>
           </div>
@@ -157,3 +97,75 @@ function CheckIcon(props: React.ComponentPropsWithoutRef<"svg">) {
     </svg>
   );
 }
+
+const mockData = [
+  {
+    "id": "lesson-1",
+    "heading": "Introduction to HTML",
+    "text": "In this lesson, you'll learn the basics of HTML and how to structure a webpage.",
+    "video": {
+      "playbackId": "abc12345",
+      "metadata": {
+        "video_id": "vid-001",
+        "video_title": "HTML Basics",
+        "viewer_user_id": "user-789"
+      }
+    }
+  },
+  {
+    "id": "lesson-2",
+    "heading": "CSS Fundamentals",
+    "text": "This lesson covers the core concepts of CSS, including selectors, properties, and the box model.",
+    "video": {
+      "playbackId": "def67890",
+      "metadata": {
+        "video_id": "vid-002",
+        "video_title": "CSS Fundamentals",
+        "viewer_user_id": "user-789"
+      }
+    }
+  },
+  {
+    "id": "lesson-3",
+    "heading": "JavaScript Essentials",
+    "text": "Learn the essentials of JavaScript, including variables, functions, and event handling.",
+    "video": {
+      "playbackId": "ghi23456",
+      "metadata": {
+        "video_id": "vid-003",
+        "video_title": "JavaScript Essentials",
+        "viewer_user_id": "user-789"
+      }
+    }
+  },
+  {
+    "id": "lesson-4",
+    "heading": "Responsive Web Design",
+    "text": "Explore the principles of responsive web design and how to create layouts that work on any device.",
+    "video": {
+      "playbackId": "jkl78901",
+      "metadata": {
+        "video_id": "vid-004",
+        "video_title": "Responsive Web Design",
+        "viewer_user_id": "user-789"
+      }
+    }
+  },
+  {
+    "id": "lesson-5",
+    "heading": "Advanced JavaScript",
+    "text": "Dive deeper into JavaScript with topics such as closures, asynchronous programming, and the DOM.",
+    "video": {
+      "playbackId": "mno34567",
+      "metadata": {
+        "video_id": "vid-005",
+        "video_title": "Advanced JavaScript",
+        "viewer_user_id": "user-789"
+      }
+    }
+  }
+]
+
+
+
+

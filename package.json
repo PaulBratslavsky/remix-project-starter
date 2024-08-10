@@ -30,7 +30,9 @@
     "lucide-react": "^0.403.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-player": "^2.16.0",
     "react-resizable-panels": "^2.0.20",
+    "remix-utils": "^7.6.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
