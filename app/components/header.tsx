@@ -10,14 +10,9 @@ const navItems = [
     text: "Courses",
     isExternal: false,
   },
+
   {
     id: 2,
-    href: "/pricing",
-    text: "Pricing",
-    isExternal: false,
-  },
-  {
-    id: 3,
     href: "/blog",
     text: "Blog",
     isExternal: false,
