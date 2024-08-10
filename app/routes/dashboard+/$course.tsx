@@ -36,7 +36,7 @@ export default function DashboardRoute() {
             <div className="rounded p-4 overflow-auto">
               <h2 className="text-xl font-bold mb-4">Lessons</h2>
               <div className="space-y-2">
-                { courseList.map((lesson) => {
+                { courseList.map((lesson, index) => {
                   const isSelected = params.lesson === lesson.id;
                   console.log(isSelected)
                   return <Link 
@@ -46,7 +46,7 @@ export default function DashboardRoute() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      1
+                      {index + 1}
                     </div>
                     <div>
                       <h3 className="font-medium">{lesson.heading}</h3>
