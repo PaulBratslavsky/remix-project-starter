@@ -1,10 +1,12 @@
-import type { MetaFunction } from "@remix-run/node";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Features } from "~/components/features";
 
 import { Hero } from "~/components/hero";
 import { Pricing } from "~/components/pricing";
+
+import type { MetaFunction } from "@remix-run/node";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },

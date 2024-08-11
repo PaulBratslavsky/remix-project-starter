@@ -2,6 +2,7 @@ import type { MetaFunction } from "@remix-run/node";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+// import { fetchData } from "~/lib/fetch";
 import { CourseSection } from "~/components/course-section";
 
 export const meta: MetaFunction = () => {

@@ -5,6 +5,15 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 
+import type { MetaFunction } from "@remix-run/node";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Sign Up" },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
+
 export default function LoginRoute() {
   return (
     <div className="mx-auto max-w-md space-y-6 h-[calc(100vh-224px)] flex justify-center items-center">
