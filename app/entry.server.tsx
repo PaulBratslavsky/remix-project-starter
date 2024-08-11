@@ -12,11 +12,17 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
-import { getEnv } from "../env.server";
 
+const requiredServerEnv = [
+  "VITE_STRAPI_API_URL",
+  "READ_ONLY_STRAPI_API_TOKEN",
+] as const;
 
-
-global.ENV = getEnv();
+for (const env of requiredServerEnv) {
+  if (!process.env[env]) {
+    throw new Error(`Missing required server environment variable: ${env}`);
+  }
+}
 
 const ABORT_DELAY = 5_000;
 

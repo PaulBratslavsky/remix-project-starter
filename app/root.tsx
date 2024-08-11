@@ -5,16 +5,16 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
-  useLoaderData,
 } from "@remix-run/react";
 
-import { LinksFunction, json } from "@remix-run/node";
+import { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
 import faviconUrl from "~/assets/favicon.svg";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { DashboardHeader } from "./components/dashboard-header";
+import { getStrapiURL } from "./lib/utils";
 
 export const links: LinksFunction = () => {
   return [
@@ -26,17 +26,10 @@ export const links: LinksFunction = () => {
   ];
 };
 
-
-
-export async function loader() {
-  return json({ ENV });
-}
-
 export function Layout({ children }: { readonly children: React.ReactNode }) {
-  const ENV = useLoaderData<typeof loader>();
-  console.log("ENV", ENV);
-
   const isDashboard = useLocation().pathname.startsWith("/dashboard");
+  const test = getStrapiURL();
+  console.log("test", test);
   return (
     <html lang="en">
       <head>
@@ -51,12 +44,6 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
           <main className="mb-auto h-full">{children}</main>
           {!isDashboard && <Footer />}
         </div>
-
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)}`,
-          }}
-        />
 
         <ScrollRestoration />
         <Scripts />
