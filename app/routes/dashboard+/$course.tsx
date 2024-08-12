@@ -80,7 +80,7 @@ export default function DashboardRoute() {
           <Separator />
         </ResizablePanel>
 
-        <ResizableHandle />
+        <ResizableHandle withHandle />
         <ResizablePanel defaultSize={655}>
           <Outlet />
         </ResizablePanel>

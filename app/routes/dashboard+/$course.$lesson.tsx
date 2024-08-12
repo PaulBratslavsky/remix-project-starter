@@ -4,6 +4,12 @@ import { MediaPlayer } from "~/components/media-player";
 
 import { getLessonBySlug } from "~/lib/fetch";
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "~/components/ui/resizable";
+
 export async function loader({ params }: LoaderFunctionArgs) {
   const { lesson } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
@@ -20,19 +26,27 @@ export default function LessonRoute() {
 
   return (
     <div className="p-2 h-[calc(100vh-72px)]">
-      <div className="rounded p-4 flex flex-col gap-4">
-        <div className="aspect-video rounded overflow-hidden">
-          <MediaPlayer
-            videoId={video.videoId}
-            timestamp={video.timecode}
-            controls
-          />
-        </div>
-        <div>
-          <h2 className="text-xl font-bold">{title}</h2>
-          <p className="text-sm text-muted-foreground">{description}</p>
-        </div>
-      </div>
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel>
+          <div className="rounded p-4 flex flex-col gap-4">
+            <div className="aspect-video rounded overflow-hidden">
+              <MediaPlayer
+                videoId={video.videoId}
+                timestamp={video.timecode}
+                controls
+              />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">{title}</h2>
+              <p className="text-sm text-muted-foreground">{description}</p>
+            </div>
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel   defaultSize={0}>Two</ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 }
+
+
