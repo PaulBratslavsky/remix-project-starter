@@ -5,7 +5,7 @@ interface SectionLayoutProps {
   text: string;
   children?: React.ReactNode;
 }
-export default function SectionLayout(data: Readonly<SectionLayoutProps>) {
+export function SectionLayout(data: Readonly<SectionLayoutProps>) {
   if (!data) return null;
   const { subHeading, heading, text, children } = data;
   return (

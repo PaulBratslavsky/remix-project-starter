@@ -8,7 +8,7 @@ import { getStrapiMedia, formatDate, handleStrapiError } from "~/lib/utils";
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
 
-import SectionLayout from "~/components/section-layout";
+import { SectionLayout } from "~/components/section-layout";
 import { CarouselWrapper } from "~/components/carousel-wrapper";
 
 export const meta: MetaFunction = () => {
@@ -60,7 +60,8 @@ export default function CoursesRoute() {
       <CarouselWrapper
         courses={data}
         component={(props: CourseProps) => {
-          const { documentId, slug, title, description, publishedAt, image } = props;
+          const { documentId, slug, title, description, publishedAt, image } =
+            props;
 
           const imageUrl = getStrapiMedia(image?.formats?.medium?.url);
 
@@ -108,10 +109,8 @@ export default function CoursesRoute() {
   );
 }
 
-
-
 const mockData = {
   subHeading: "Expand Your Knowledge",
   heading: "Our Featured Courses",
   text: "Whether you're a beginner or an expert, our curated courses are designed to help you level up your skills.",
-}
+};

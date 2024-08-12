@@ -50,7 +50,7 @@ export default function DashboardRoute() {
                     {courseList.map(
                       (lesson: LessonListProps, index: number) => {
                         const isSelected = params.lesson === lesson.slug;
-                        const { title, description, documentId, slug } = lesson;
+                        const { title, documentId, slug } = lesson;
                         return (
                           <Link
                             key={documentId}

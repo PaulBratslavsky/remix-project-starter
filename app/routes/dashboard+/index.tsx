@@ -9,7 +9,7 @@ import { getUserData } from "~/services/auth/session.server";
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
 
-import SectionLayout from "~/components/section-layout";
+import { SectionLayout } from "~/components/section-layout";
 import { CarouselWrapper } from "~/components/carousel-wrapper";
 
 export const meta: MetaFunction = () => {

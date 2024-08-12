@@ -21,6 +21,7 @@ export function NavLinkItem(props: Readonly<NavLinkItemProps>) {
       className={({ isActive }) => cn(linkStyle, activeClassName({ isActive }))}
       prefetch="intent"
       target={isExternal ? "_blank" : "_self"}
+      rel={isExternal ? "noopener noreferrer" : ""}
     >
       {children}
     </NavLink>

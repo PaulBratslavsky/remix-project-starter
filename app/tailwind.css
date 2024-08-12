@@ -168,3 +168,117 @@ body {
   @apply bg-yellow-100 border-yellow-500 text-yellow-700 px-4 py-2 rounded-lg mb-4;
 }
 
+/******************************************* 
+  Rich Text Resources Styles
+*******************************************/ 
+
+/* Headers */
+.resources-text article  h1 {
+  @apply text-2xl font-bold mb-9 text-secondary-foreground tracking-tight leading-normal;
+}
+
+.resources-text article  h2 {
+  @apply text-2xl font-bold mb-6 mt-2 tracking-tight leading-normal;
+}
+
+.resources-text article  h3 {
+  @apply text-xl font-bold mb-5 mt-2 tracking-tight leading-normal;
+}
+
+.resources-text article  h4 {
+  @apply text-lg font-bold mb-4 mt-2 tracking-tight leading-normal;
+}
+
+.rich-text article  h5 {
+  @apply text-sm font-bold mb-3 mt-2 tracking-tight leading-normal;
+}
+
+.resources-text article  h6 {
+  @apply text-xs font-bold mb-2 mt-2 tracking-tight leading-normal;
+}
+
+/* Horizontal rules */
+.resources-text article  hr {
+  @apply border-gray-300 my-8;
+}
+
+.resources-text article  a {
+  @apply underline;
+}
+
+/* Typographic replacements */
+.resources-text article  p {
+  @apply mb-2 text-lg leading-8 text-muted-foreground;
+}
+
+/* Emphasis */
+.resources-text article  strong {
+  @apply font-bold;
+}
+
+.resources-text article  em {
+  @apply italic;
+}
+
+.resources-text article  del {
+  @apply line-through;
+}
+
+/* Blockquotes */
+.resources-text article  blockquote {
+  @apply border-l-4 border-gray-400 pl-4 py-2 mb-4;
+}
+
+/* Lists */
+.resources-text article  ul {
+  @apply list-disc pl-4 mb-4;
+}
+
+.resources-text article  ol {
+  @apply list-decimal pl-4 mb-4;
+}
+
+.resources-text article  li {
+  @apply mb-2;
+}
+
+.resources-text article  li > ul {
+  @apply list-disc pl-4 mb-2;
+}
+
+.resources-text article  li > ol {
+  @apply list-decimal pl-4 mb-2;
+}
+
+/* Code blocks */
+.resources-text article  pre {
+  @apply font-mono bg-gray-900 text-gray-100 rounded-lg p-4  my-8 overflow-scroll;
+}
+
+.resources-text article  code {
+  @apply font-mono bg-pink-600 text-gray-100 rounded-sm px-2 py-0.5;
+}
+
+/* Tables */
+.resources-text article  table {
+  @apply w-full border-collapse border-gray-300 my-6;
+}
+
+.resources-text article  th {
+  @apply bg-gray-900 text-left py-2 px-4 font-semibold border-b border-gray-300;
+}
+
+.resources-text article  td {
+  @apply py-2 px-4 border-b border-gray-300;
+}
+
+/* Images */
+.resources-text article  img {
+  @apply w-full object-cover rounded-xl shadow-lg my-12;
+}
+
+/* Custom containers */
+.resources-text article  .warning {
+  @apply bg-yellow-100 border-yellow-500 text-yellow-700 px-4 py-2 rounded-lg mb-4;
+}
+
