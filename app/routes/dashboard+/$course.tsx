@@ -5,6 +5,7 @@ import { cn, handleStrapiError } from "~/lib/utils";
 
 import { getCourseBySlug } from "~/lib/fetch";
 import { TooltipProvider } from "~/components/ui/tooltip";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 import {
   ResizableHandle,
@@ -41,45 +42,44 @@ export default function DashboardRoute() {
   return (
     <TooltipProvider delayDuration={0}>
       <Separator />
-
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={250}>
-          <div className="p-2 h-[calc(100vh-72px)]">
-            <div className="rounded p-4 overflow-auto">
-              <h2 className="text-xl font-bold mb-4">Lessons</h2>
-              <div className="space-y-2">
-                {courseList.map((lesson: LessonListProps, index: number) => {
-                  const isSelected = params.lesson === lesson.slug;
-                  const { title, description, documentId, slug } = lesson;
-                  return (
-                    <Link
-                      key={documentId}
-                      to={slug}
-                      className={cn(
-                        "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
-                        isSelected ? "bg-muted" : ""
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <h3 className="font-medium">{title}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {description}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-muted-foreground text-sm">
-                        <CheckIcon className="w-5 h-5" />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+                        <ScrollArea className="h-[calc(100vh-72px)] w-full p-4">
+                  <h2 className="text-xl font-bold mb-4">Lessons</h2>
+                  <div className="space-y-2">
+                    {courseList.map(
+                      (lesson: LessonListProps, index: number) => {
+                        const isSelected = params.lesson === lesson.slug;
+                        const { title, description, documentId, slug } = lesson;
+                        return (
+                          <Link
+                            key={documentId}
+                            to={slug}
+                            className={cn(
+                              "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
+                              isSelected ? "bg-muted" : ""
+                            )}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
+                                {index + 1}
+                              </div>
+                              <div>
+                                <h3 className="font-medium">{title}</h3>
+                                {/* <p className="text-sm text-muted-foreground">
+                                  {description}
+                                </p> */}
+                              </div>
+                            </div>
+                            <div className="text-muted-foreground text-sm">
+                              <CheckIcon className="w-5 h-5" />
+                            </div>
+                          </Link>
+                        );
+                      }
+                    )}
+                  </div>
+              </ScrollArea>
           <Separator />
         </ResizablePanel>
 
