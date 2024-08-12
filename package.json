@@ -36,7 +36,8 @@
     "react-resizable-panels": "^2.0.20",
     "remix-utils": "^7.6.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.46.0",

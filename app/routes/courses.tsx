@@ -53,7 +53,6 @@ interface CourseProps {
 export default function CoursesRoute() {
   const { headerData, courseData } = useLoaderData<typeof loader>();
   const { meta, data } = courseData;
-  console.dir(data, { depth: null });
   console.log(meta); // will use this for pagination later
   return (
     <SectionLayout {...headerData}>

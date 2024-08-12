@@ -47,7 +47,7 @@ export function DashboardHeader() {
               PB
             </Link>
           </Button>
-          <Link to="/" className="cursor-pointer">
+          <Link to="/logout" className="cursor-pointer">
             <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
           </Link>
         </div>
@@ -72,7 +72,7 @@ export function DashboardHeader() {
 
             <Button size="lg" asChild className="mt-2 w-full bg-muted">
 
-            <Link to="/" className="cursor-pointer">
+            <Link to="/logout" className="cursor-pointer">
               Log Out
               <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
             </Link>
