@@ -92,7 +92,7 @@ function generateYouTubeUrl(videoId: string) {
 }
 
 const reactPlayer = "absolute inset-0";
-const playerWrapper = "relative aspect-video overflow-hidden rounded-lg";
+const playerWrapper = "relative aspect-video overflow-hidden rounded";
 const playerControlsWrapper = "absolute inset-0 z-10 w-full h-full";
 const playerControls =
   "grid place-items-center gap-1 grid-cols-3 w-full h-full";
