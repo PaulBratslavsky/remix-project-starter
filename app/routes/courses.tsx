@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 
 import { getAllCourses } from "~/lib/fetch";
-import { getStrapiMedia, formatDate } from "~/lib/utils";
+import { getStrapiMedia, formatDate, handleStrapiError } from "~/lib/utils";
 
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
@@ -21,6 +21,7 @@ export const meta: MetaFunction = () => {
 export async function loader() {
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
   const data = await getAllCourses(PUBLIC_TOKEN);
+  handleStrapiError(data?.error);
   return json({ headerData: { ...mockData }, courseData: data });
 }
 

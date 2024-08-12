@@ -1,9 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 
 import { getAllCourses } from "~/lib/fetch";
 import { getStrapiMedia, formatDate } from "~/lib/utils";
+import { getUserData } from "~/services/auth/session.server";
 
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
@@ -18,11 +19,15 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
+  const user = await getUserData(request);
+  if (!user) return redirect("/auth/signin");
   const data = await getAllCourses(PUBLIC_TOKEN);
   return json({ headerData: { ...mockData }, courseData: data });
 }
+
+
 
 interface ImageProps {
   url: string;

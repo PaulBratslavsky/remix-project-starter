@@ -8,10 +8,10 @@ import { json, redirect } from "@remix-run/node";
 
 import { useActionData, Link, Form } from "@remix-run/react";
 
-import { register } from "~/services/auth/auth.server";
+import { login } from "~/services/auth/auth.server";
 import { getUserData, createUserSession } from "~/services/auth/session.server";
 
-import { StrapiRegisterFormProps } from "../../types";
+import { StrapiLoginFormProps } from "~/types";
 
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
@@ -22,7 +22,7 @@ import { ZodErrors, StrapiErrors } from "~/components/errors";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Sign Up" },
+    { title: "Sign In" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
@@ -34,8 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 const validationSchema = z.object({
-  username: z.string().min(1, { message: "Please provide a username" }),
-  email: z.string().email({ message: "Please provide a valid email" }),
+  identifier: z.string().min(1, { message: "Please provide username or email" }),
   password: z
     .string()
     .min(6, { message: "Password Must be 6 or more characters long" }),
@@ -45,8 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const validation = validationSchema.safeParse({
-    username: formData.get("username"),
-    email: formData.get("email"),
+    identifier: formData.get("identifier"),
     password: formData.get("password"),
   });
 
@@ -58,7 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const response = await register(validation.data as StrapiRegisterFormProps);
+  const response = await login(validation.data as StrapiLoginFormProps);
 
   if (response?.error)
     return json({
@@ -78,40 +76,35 @@ interface StrapiErrorsProps {
 
 type StrapiError = StrapiErrorsProps | undefined | null;
 
-export default function SignupRoute() {
+export default function LoginRoute() {
   const actionData = useActionData<typeof action>();
   return (
     <div className="mx-auto max-w-md space-y-6 h-[calc(100vh-224px)] flex justify-center items-center">
       <div className="w-full p-8 rounded">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Sign Up</h1>
+          <h1 className="text-3xl font-bold">Sign In</h1>
           <p className="text-muted-foreground">
             Create your account to get started.
           </p>
         </div>
         <Form className="grid gap-4 mt-6" method="post">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="identifier">Email or Username</Label>
             <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
+              id="identifier"
+              name="identifier"
+              type="identifier"
+              defaultValue={"testuser"}
             />
-            <ZodErrors error={actionData?.formErrors?.email as string[]} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input id="username" name="username" placeholder="Username" />
-            <ZodErrors error={actionData?.formErrors?.username as string[]} />
+            <ZodErrors error={actionData?.formErrors?.identifier as string[]} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" />
+            <Input id="password" name="password" type="password" defaultValue={"testuser"} />
             <ZodErrors error={actionData?.formErrors?.password as string[]} />
           </div>
           <Button type="submit" className="w-full">
-            Sign Up
+            Sign In
           </Button>
         </Form>
 
@@ -121,13 +114,13 @@ export default function SignupRoute() {
         <div className="space-y-4">
           <Button variant="outline" className="w-full">
             <GithubIcon className="mr-2 h-4 w-4" />
-            Sign up with GitHub
+            Sign in with GitHub
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
-        <span className="mr-2">Already have an account?</span>
-          <Link to="/auth/signin" className="underline">
-            Sign in
+          <span className="mr-2">Don&apos;t have an account?</span>
+          <Link to="/auth/signup" className="underline">
+            Sign up
           </Link>
         </div>
       </div>

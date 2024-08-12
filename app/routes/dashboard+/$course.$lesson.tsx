@@ -1,8 +1,11 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { MediaPlayer } from "~/components/media-player";
 
+import { getUserData } from "~/services/auth/session.server";
+
 import { getLessonBySlug } from "~/lib/fetch";
+import { handleStrapiError } from "~/lib/utils";
 
 import {
   ResizableHandle,
@@ -10,10 +13,13 @@ import {
   ResizablePanelGroup,
 } from "~/components/ui/resizable";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   const { lesson } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
+  const user = await getUserData(request);
+  if (!user) return redirect("/auth/signin");
   const data = await getLessonBySlug(lesson as string, PUBLIC_TOKEN);
+  handleStrapiError(data?.error);
   const courseData = data?.data[0];
   return json({ data: courseData });
 }
