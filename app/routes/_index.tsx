@@ -3,7 +3,6 @@ import { useLoaderData } from "@remix-run/react";
 import { Features } from "~/components/features";
 
 import { Hero } from "~/components/hero";
-import { Pricing } from "~/components/pricing";
 
 import type { MetaFunction } from "@remix-run/node";
 
@@ -24,15 +23,14 @@ export default function Index() {
     <div>
       <Hero {...data} />
       <Features />
-      <Pricing />
     </div>
   );
 }
 
 const mockData = {
-  subHeading: "Welcome to Our Service",
-  heading: "Transform Your Business Today",
-  text: "Our platform provides all the tools you need to streamline your operations and grow your business. Get started with us now!",
+  subHeading: "Welcome to Coding After Thirty",
+  heading: "Building LMS with Remix and Strapi 5",
+  text: "This is a project that I am currently building to use as an example and learn more on how to create Learning Management Systems.",
   links: [
     {
       text: "Get Started",

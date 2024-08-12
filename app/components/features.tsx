@@ -15,7 +15,7 @@ export function Features() {
       <div className="flex flex-col gap-3">
         <span className="font-bold uppercase text-primary text-center">Features</span>
         <h2 className="font-heading text-3xl font-semibold sm:text-4xl text-center">
-          Build fast and stay flexible
+          This  Project UI is build with Reweb and Shadcn UI
         </h2>
       </div>
       <p className="text-lg text-muted-foreground max-w-2xl text-center">
