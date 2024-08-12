@@ -1,5 +1,7 @@
 import qs from "qs";
-const BASE_URL = import.meta.env.VITE_STRAPI_API_URL;
+import { getStrapiURL } from "./utils";
+
+const BASE_URL = getStrapiURL();
 export async function fetchData(url: string, authToken?: string) {
   const headers = {
     method: "GET",

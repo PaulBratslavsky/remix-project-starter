@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Features } from "~/components/features";
 
@@ -14,8 +14,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export function loader(request: LoaderFunctionArgs) {
-  console.log(request);
+export function loader() {
   return json({ data: mockData });
 }
 

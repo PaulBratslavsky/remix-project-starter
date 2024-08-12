@@ -1,11 +1,24 @@
-import { Link } from "@remix-run/react";
+import z from "zod";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+
+import { useActionData, Link, Form } from "@remix-run/react";
+
+import { register } from "~/services/auth/auth.server";
+import { getUserData, createUserSession } from "~/services/auth/session.server";
+
+import { StrapiRegisterFormProps } from "../../types";
 
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 
-import type { MetaFunction } from "@remix-run/node";
+import { ZodErrors, StrapiErrors } from "~/components/errors";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,7 +27,59 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await getUserData(request);
+  if (user) return redirect("/dashboard");
+  return null;
+}
+
+const validationSchema = z.object({
+  username: z.string(),
+  email: z.string().email({ message: "Please provide a valid email" }),
+  password: z
+    .string()
+    .min(6, { message: "Password Must be 6 or more characters long" }),
+});
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+
+  const validation = validationSchema.safeParse({
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!validation.success) {
+    return json({
+      data: null,
+      formErrors: validation.error.flatten().fieldErrors,
+      strapiError: null,
+    });
+  }
+
+  const response = await register(validation.data as StrapiRegisterFormProps);
+
+  if (response?.error)
+    return json({
+      data: null,
+      formErrors: null,
+      strapiError: response.error,
+    });
+
+  return createUserSession(response.jwt, "/dashboard");
+}
+
+interface StrapiErrorsProps {
+  message: string;
+  name: string;
+  statusCode: number;
+}
+
+type StrapiError = StrapiErrorsProps | undefined | null;
+
 export default function LoginRoute() {
+  const actionData = useActionData<typeof action>();
   return (
     <div className="mx-auto max-w-md space-y-6 h-[calc(100vh-224px)] flex justify-center items-center">
       <div className="w-full p-8 rounded">
@@ -24,29 +89,35 @@ export default function LoginRoute() {
             Create your account to get started.
           </p>
         </div>
-        <div className="grid gap-4 mt-6">
+        <Form className="grid gap-4 mt-6" method="post">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="m@example.com"
               className=""
-              required
             />
+            <ZodErrors error={actionData?.formErrors?.email as string[]} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
-            <Input id="username" placeholder="johndoe" required />
+            <Input id="username" name="username" placeholder="johndoe" />
+            <ZodErrors error={actionData?.formErrors?.username as string[]} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <Input id="password" name="password" type="password" />
+            <ZodErrors error={actionData?.formErrors?.password as string[]} />
           </div>
           <Button type="submit" className="w-full">
             Sign Up
           </Button>
-        </div>
+        </Form>
+
+        <StrapiErrors error={actionData?.strapiError as StrapiError} />
+
         <Separator className="my-8" />
         <div className="space-y-4">
           <Button variant="outline" className="w-full">
