@@ -42,7 +42,6 @@ interface CourseProps {
 export function CourseSection(data: Readonly<CourseSectionProps>) {
   if (!data) return null;
   const { subHeading, heading, text, courses } = data;
-  console.log(data);
   return (
     <section className="container h-full flex flex-col items-center gap-6 py-20 sm:gap-7">
       <div className="flex flex-col gap-3">

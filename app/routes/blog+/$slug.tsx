@@ -1,14 +1,10 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
 export async function loader({ params }: LoaderFunctionArgs) {
   return json({ params });
 }
 
 export default function SinglePostRoute() {
-  const { params } = useLoaderData<typeof loader>();
-  console.log(params);
-
   return (
     <div className=" px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-3xl text-base leading-7 ">

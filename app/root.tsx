@@ -14,7 +14,6 @@ import faviconUrl from "~/assets/favicon.svg";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { DashboardHeader } from "./components/dashboard-header";
-import { getStrapiURL } from "./lib/utils";
 
 export const links: LinksFunction = () => {
   return [
@@ -28,8 +27,6 @@ export const links: LinksFunction = () => {
 
 export function Layout({ children }: { readonly children: React.ReactNode }) {
   const isDashboard = useLocation().pathname.startsWith("/dashboard");
-  const test = getStrapiURL();
-  console.log("test", test);
   return (
     <html lang="en">
       <head>

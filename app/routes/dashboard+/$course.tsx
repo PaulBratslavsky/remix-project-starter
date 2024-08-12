@@ -1,6 +1,8 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link, Outlet, useParams } from "@remix-run/react";
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
+
+import { getCourseBySlug } from "~/lib/fetch";
 
 import { TooltipProvider } from "~/components/ui/tooltip";
 
@@ -13,19 +15,26 @@ import {
 import { Separator } from "~/components/ui/separator";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  console.log(params.lesson);
-  return json({ data: mockData });
+  const { course } = params;
+  const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
+  const data = await getCourseBySlug(course as string, PUBLIC_TOKEN);
+  const courseData = data?.data[0];
+  return json({ data: courseData });
+}
+
+interface LessonListProps {
+  documentId: string;
+  slug: string;
+  title: string;
+  description: string;
 }
 
 export default function DashboardRoute() {
-  const data = useLoaderData<typeof loader>();
   const params = useParams();
+  const { data } = useLoaderData<typeof loader>();
 
-  console.log(params)
-  if (!data) return null;
-  const courseList = data?.data;
+  const courseList = data.lessons;
 
-  console.log(courseList);
   return (
     <TooltipProvider delayDuration={0}>
       <Separator />
@@ -36,33 +45,35 @@ export default function DashboardRoute() {
             <div className="rounded p-4 overflow-auto">
               <h2 className="text-xl font-bold mb-4">Lessons</h2>
               <div className="space-y-2">
-                { courseList.map((lesson, index) => {
-                  const isSelected = params.lesson === lesson.id;
-                  console.log(isSelected)
-                  return <Link 
-                  key={lesson.id}
-                  to={lesson.id}
-                  className={cn("flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors", isSelected ? "bg-muted" : "")}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="font-medium">{lesson.heading}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {lesson.text}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-muted-foreground text-sm">
-                    <CheckIcon className="w-5 h-5" />
-                  </div>
-                </Link>
-              
-                }
-              
-              )}
+                {courseList.map((lesson: LessonListProps, index: number) => {
+                  const isSelected = params.lesson === lesson.slug;
+                  const { title, description, documentId, slug } = lesson;
+                  return (
+                    <Link
+                      key={documentId}
+                      to={slug}
+                      className={cn(
+                        "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
+                        isSelected ? "bg-muted" : ""
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <h3 className="font-medium">{title}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-muted-foreground text-sm">
+                        <CheckIcon className="w-5 h-5" />
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -97,75 +108,3 @@ function CheckIcon(props: React.ComponentPropsWithoutRef<"svg">) {
     </svg>
   );
 }
-
-const mockData = [
-  {
-    "id": "lesson-1",
-    "heading": "Introduction to HTML",
-    "text": "In this lesson, you'll learn the basics of HTML and how to structure a webpage.",
-    "video": {
-      "playbackId": "abc12345",
-      "metadata": {
-        "video_id": "vid-001",
-        "video_title": "HTML Basics",
-        "viewer_user_id": "user-789"
-      }
-    }
-  },
-  {
-    "id": "lesson-2",
-    "heading": "CSS Fundamentals",
-    "text": "This lesson covers the core concepts of CSS, including selectors, properties, and the box model.",
-    "video": {
-      "playbackId": "def67890",
-      "metadata": {
-        "video_id": "vid-002",
-        "video_title": "CSS Fundamentals",
-        "viewer_user_id": "user-789"
-      }
-    }
-  },
-  {
-    "id": "lesson-3",
-    "heading": "JavaScript Essentials",
-    "text": "Learn the essentials of JavaScript, including variables, functions, and event handling.",
-    "video": {
-      "playbackId": "ghi23456",
-      "metadata": {
-        "video_id": "vid-003",
-        "video_title": "JavaScript Essentials",
-        "viewer_user_id": "user-789"
-      }
-    }
-  },
-  {
-    "id": "lesson-4",
-    "heading": "Responsive Web Design",
-    "text": "Explore the principles of responsive web design and how to create layouts that work on any device.",
-    "video": {
-      "playbackId": "jkl78901",
-      "metadata": {
-        "video_id": "vid-004",
-        "video_title": "Responsive Web Design",
-        "viewer_user_id": "user-789"
-      }
-    }
-  },
-  {
-    "id": "lesson-5",
-    "heading": "Advanced JavaScript",
-    "text": "Dive deeper into JavaScript with topics such as closures, asynchronous programming, and the DOM.",
-    "video": {
-      "playbackId": "mno34567",
-      "metadata": {
-        "video_id": "vid-005",
-        "video_title": "Advanced JavaScript",
-        "viewer_user_id": "user-789"
-      }
-    }
-  }
-]
-
-
-
-
