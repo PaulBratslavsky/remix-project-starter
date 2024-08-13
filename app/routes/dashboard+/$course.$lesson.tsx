@@ -1,7 +1,7 @@
 import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { getLessonBySlug } from "~/lib/fetch";
+import { getLessonBySlug } from "~/data/loaders";
 import { handleStrapiError } from "~/lib/utils";
 import { userme } from "~/services/auth/userme.server";
 
@@ -21,7 +21,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const user = await userme(request);
   if (!user) return redirect("/auth/signin");
   const data = await getLessonBySlug(lesson as string, PUBLIC_TOKEN);
-  console.dir(data, { depth: null });
   handleStrapiError(data?.error);
   const courseData = data?.data[0];
   return json({ data: courseData });

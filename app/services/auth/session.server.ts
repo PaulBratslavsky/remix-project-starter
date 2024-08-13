@@ -30,7 +30,6 @@ interface UserProps {
 
 export async function createUserSession(user: UserProps, redirectTo: string,) {
   "FROM CREATE USER SESSION";
-  console.dir(user, { depth: null });
   const sessionData = await getSession();
   sessionData.set('user-session', user);
   return redirect(redirectTo, {

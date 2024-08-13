@@ -1,7 +1,10 @@
+import type { StrapiUserMeProps } from "~/types";
+
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
 import { NavLinkItem } from "~/components/nav-link-item";
+import { UserNavButton } from "~/components/user-nav-button";
 
 const navItems = [
   {
@@ -19,7 +22,7 @@ const navItems = [
   },
 ];
 
-export function Header() {
+export function Header({ user }: StrapiUserMeProps) {
   return (
     <header className="flex items-center justify-between gap-10 py-4 container">
       <Link to="/" className="flex items-center gap-3">
@@ -33,7 +36,9 @@ export function Header() {
             fill="currentColor"
           />
         </svg>
-        <span className="font-heading text-xl font-bold">Coding After Thirty</span>
+        <span className="font-heading text-xl font-bold">
+          Coding After Thirty
+        </span>
       </Link>
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
@@ -48,11 +53,15 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
-          <Button asChild>
-            <Link to="auth/signup" className="cursor-pointer">
-              Sign Up
-            </Link>
-          </Button>
+          {user ? (
+            <UserNavButton user={user} />
+          ) : (
+            <Button asChild>
+              <Link to="auth/signup" className="cursor-pointer">
+                Sign Up
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
       <MobileNavbar>

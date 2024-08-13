@@ -3,7 +3,7 @@ import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 
 import { formatDate, handleStrapiError } from "~/lib/utils";
-import { getAllPosts } from "~/lib/fetch";
+import { getAllPosts } from "~/data/loaders";
 
 import { Card, CardContent } from "~/components/ui/card";
 import { Search } from "~/components/search";
@@ -41,7 +41,6 @@ export default function BlogIndexRoute() {
   const { data, pagination, query } = useLoaderData<typeof loader>();
   const pageCount = pagination.pageCount;
 
-  console.log(data);
   return (
     <section className="container h-full flex flex-col items-center gap-4  sm:gap-2 py-2">
       <Search query={query} />

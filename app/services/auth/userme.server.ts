@@ -4,7 +4,16 @@ import { getUserToken } from "./session.server";
 import { getStrapiURL } from "~/lib/utils";
 
 const query = qs.stringify({
-  fields: ["username", "email"],
+  fields: ["id", "email", "username"],
+  populate: {
+    userProfile: {
+      populate: {
+        followedCourses: {
+          populate: "*",
+        },
+      },
+    },
+  },
 });
 
 export async function userme(request: Request) {
@@ -12,10 +21,13 @@ export async function userme(request: Request) {
   if (!user) return null;
 
   const BASE_URL = getStrapiURL();
-  const path = `/api/users/me?${query}`;
+  const path = `/api/users/me`;
+
+  const url = new URL(path, BASE_URL);
+  url.search = query;
 
   try {
-    const userRequest = await fetch(BASE_URL + path, {
+    const userRequest = await fetch(url.href, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

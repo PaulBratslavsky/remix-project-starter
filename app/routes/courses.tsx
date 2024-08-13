@@ -1,15 +1,21 @@
+import type { CourseProps } from "~/types";
 import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
-import { getAllCourses } from "~/lib/fetch";
-import { getStrapiMedia, formatDate, handleStrapiError } from "~/lib/utils";
+import { getAllCourses } from "~/data/loaders";
+import { handleStrapiError } from "~/lib/utils";
 
-import { CarouselItem } from "~/components/ui/carousel";
-import { Card, CardContent } from "~/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselPrevious,
+  CarouselNext,
+} from "~/components/ui/carousel";
 
 import { SectionLayout } from "~/components/section-layout";
-import { CarouselWrapper } from "~/components/carousel-wrapper";
+
+import { CourseItem } from "~/components/course-item";
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,86 +31,23 @@ export async function loader() {
   return json({ headerData: { ...mockData }, courseData: data });
 }
 
-interface ImageProps {
-  url: string;
-  alt: string;
-  width: number;
-  height: number;
-  alternativeText: string;
-  formats: {
-    medium: {
-      url: string;
-      height: number;
-      width: number;
-    };
-  };
-}
-
-interface CourseProps {
-  id: number;
-  documentId: string;
-  title: string;
-  description: string;
-  isPremium: boolean;
-  slug: string;
-  publishedAt: string;
-  image: ImageProps;
-}
 
 export default function CoursesRoute() {
   const { headerData, courseData } = useLoaderData<typeof loader>();
-  const { meta, data } = courseData;
-  console.log(meta); // will use this for pagination later
+  const { data } = courseData;
+
   return (
     <SectionLayout {...headerData}>
-      <CarouselWrapper
-        courses={data}
-        component={(props: CourseProps) => {
-          const { documentId, slug, title, description, publishedAt, image } =
-            props;
-
-          const imageUrl = getStrapiMedia(image?.formats?.medium?.url);
-
-          return (
-            <CarouselItem
-              key={documentId}
-              className="md:basis-1/2 lg:basis-1/3"
-            >
-              <div className="h-full p-1">
-                <Link to={"/dashboard/" + slug}>
-                  <Card className="h-full shadow-lg">
-                    <CardContent className="flex h-full flex-col items-start gap-5 p-5">
-                      {imageUrl && (
-                        <div className="relative h-52 w-full">
-                          <img
-                            src={imageUrl}
-                            alt={image.alt}
-                            className="object-cover rounded-lg"
-                          />
-                        </div>
-                      )}
-                      <div className="flex flex-1 flex-col gap-4">
-                        <h4 className="text-lg font-semibold">{title}</h4>
-                        <p className="mb-auto text-muted-foreground">
-                          {description}
-                        </p>
-                        <div className="flex items-center gap-3">
-                          <span className="rounded-full border bg-accent px-3 py-0.5 text-sm text-accent-foreground">
-                            {"Strapi"}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            {formatDate(publishedAt)}
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-            </CarouselItem>
-          );
-        }}
-      />
+      <Carousel
+        opts={{ align: "start", loop: true }}
+        className="mt-6 w-full px-4 xl:px-0"
+      >
+        <CarouselPrevious className="-left-6 size-7 xl:-left-12 xl:size-8" />
+        <CarouselContent className="pb-4">
+          {data.map((course: CourseProps) => <CourseItem course={course} key={course.id} />)}
+        </CarouselContent>
+        <CarouselNext className="-right-6 size-7 xl:-right-12 xl:size-8" />
+      </Carousel>
     </SectionLayout>
   );
 }

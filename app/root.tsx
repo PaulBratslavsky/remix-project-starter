@@ -36,7 +36,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { readonly children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
   const isDashboard = useLocation().pathname.startsWith("/dashboard");
   return (
     <html lang="en">
@@ -48,7 +47,7 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
       </head>
       <body>
         <div className="flex flex-col min-h-screen justify-between">
-          {isDashboard ? <DashboardHeader /> : <Header />}
+          {isDashboard ? <DashboardHeader user={data.user} /> : <Header user={data.user}/>}
           <main className="mb-auto h-full">{children}</main>
           {!isDashboard && <Footer />}
         </div>

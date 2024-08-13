@@ -52,7 +52,7 @@ export function CarouselWrapper({
       <CarouselPrevious className="-left-6 size-7 xl:-left-12 xl:size-8" />
       <CarouselContent className="pb-4">
         {courses.map((course) => (
-          <Component key={course.id} {...course} />
+          <Component key={course.id} {...course } />
         ))}
       </CarouselContent>
       <CarouselNext className="-right-6 size-7 xl:-right-12 xl:size-8" />

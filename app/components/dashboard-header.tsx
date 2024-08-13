@@ -1,9 +1,9 @@
+import type { StrapiUserMeProps } from "~/types";
+
 import { Link } from "@remix-run/react";
-import { Button } from "~/components/ui/button";
 import { MobileNavbar } from "~/components/mobile-navbar";
 import { NavLinkItem } from "~/components/nav-link-item";
-
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { UserNavButton } from "~/components/user-nav-button";
 
 const navItems = [
   {
@@ -11,9 +11,10 @@ const navItems = [
     href: "/dashboard",
     text: "Courses",
     isExternal: false,
-  }
-]
-export function DashboardHeader() {
+  },
+];
+
+export function DashboardHeader({ user }: StrapiUserMeProps) {
   return (
     <header className="flex items-center justify-between gap-10 py-4 px-6">
       <Link to="/" className="flex items-center gap-3">
@@ -31,53 +32,32 @@ export function DashboardHeader() {
       </Link>
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
-        {navItems.map((navItem) => (
-              <NavLinkItem
-                to={navItem.href}
-                isExternal={navItem.isExternal}
-                key={navItem.id}
-              >
-                {navItem.text}{" "}
-              </NavLinkItem>
-            ))}
+          {navItems.map((navItem) => (
+            <NavLinkItem
+              to={navItem.href}
+              isExternal={navItem.isExternal}
+              key={navItem.id}
+            >
+              {navItem.text}{" "}
+            </NavLinkItem>
+          ))}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
-          <Button asChild className="w-8 h-8 rounded-full">
-            <Link to="dashboard" className="cursor-pointer">
-              PB
-            </Link>
-          </Button>
-          <Link to="/logout" className="cursor-pointer">
-            <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
-          </Link>
-        </div>
+
+        <UserNavButton user={user} />
       </div>
       <MobileNavbar>
         <div className="rounded-b-lg bg-background py-4 container text-foreground shadow-xl">
           <nav className="flex flex-col gap-1 pt-2">
-          {navItems.map((navItem) => (
+            {navItems.map((navItem) => (
               <NavLinkItem
                 to={navItem.href}
                 isExternal={navItem.isExternal}
                 key={navItem.id}
               >
-                {navItem.text}{" "}
+                {navItem.text}
               </NavLinkItem>
             ))}
-            <Button size="lg" asChild className="mt-2 w-full">
-              <Link to="dashboard" className="cursor-pointer">
-                Paul
-              </Link>
-            </Button>
-
-            <Button size="lg" asChild className="mt-2 w-full bg-muted">
-
-            <Link to="/logout" className="cursor-pointer">
-              Log Out
-              <ArrowLeftStartOnRectangleIcon className="ml-2 h-6 w-6 text-muted-foreground" />
-            </Link>
-
-            </Button>
+            <UserNavButton user={user} />
           </nav>
         </div>
       </MobileNavbar>

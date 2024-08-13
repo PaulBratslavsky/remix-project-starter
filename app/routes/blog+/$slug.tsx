@@ -1,10 +1,9 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getPostBySlug } from "~/lib/fetch";
+import { getPostBySlug } from "~/data/loaders";
 import { handleStrapiError } from "~/lib/utils";
 
 import { Markdown } from "~/components/markdown";
-
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const slug = params?.slug;
