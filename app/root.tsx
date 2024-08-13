@@ -5,9 +5,12 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
+  useLoaderData,
 } from "@remix-run/react";
 
-import { LinksFunction } from "@remix-run/node";
+import { LinksFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+
+import { userme } from "./services/auth/userme.server";
 
 import "./tailwind.css";
 import faviconUrl from "~/assets/favicon.svg";
@@ -25,7 +28,15 @@ export const links: LinksFunction = () => {
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await userme(request);
+  return json({ user });
+}
+
+
 export function Layout({ children }: { readonly children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+  console.log(data);
   const isDashboard = useLocation().pathname.startsWith("/dashboard");
   return (
     <html lang="en">

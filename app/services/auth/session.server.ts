@@ -44,7 +44,7 @@ function getUserSession(request: Request) {
   return getSession(request.headers.get('Cookie'));
 }
 
-export async function getUserData(request: Request) {
+export async function getUserToken(request: Request) {
   const session = await getUserSession(request);
   return session.get('user-session');
 }

@@ -1,6 +1,5 @@
 import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData, Link, Outlet, useParams } from "@remix-run/react";
-import { getUserData } from "~/services/auth/session.server";
 import { cn, handleStrapiError } from "~/lib/utils";
 
 import { getCourseBySlug } from "~/lib/fetch";
@@ -14,11 +13,12 @@ import {
 } from "~/components/ui/resizable";
 
 import { Separator } from "~/components/ui/separator";
+import { userme } from "~/services/auth/userme.server";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { course } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
-  const user = await getUserData(request);
+  const user = await userme(request);
   if (!user) return redirect("/auth/signin");
   const data = await getCourseBySlug(course as string, PUBLIC_TOKEN);
   handleStrapiError(data?.error);

@@ -1,6 +1,6 @@
 import qs from "qs";
 
-import { getUserData } from "./session.server";
+import { getUserToken } from "./session.server";
 import { getStrapiURL } from "~/lib/utils";
 
 const query = qs.stringify({
@@ -8,7 +8,7 @@ const query = qs.stringify({
 });
 
 export async function userme(request: Request) {
-  const user = await getUserData(request);
+  const user = await getUserToken(request);
   if (!user) return null;
 
   const BASE_URL = getStrapiURL();

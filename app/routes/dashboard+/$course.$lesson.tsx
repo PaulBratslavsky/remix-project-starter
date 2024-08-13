@@ -1,12 +1,12 @@
 import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { MediaPlayer } from "~/components/media-player";
-import { Markdown } from "~/components/markdown";
-
-import { getUserData } from "~/services/auth/session.server";
 
 import { getLessonBySlug } from "~/lib/fetch";
 import { handleStrapiError } from "~/lib/utils";
+import { userme } from "~/services/auth/userme.server";
+
+import { MediaPlayer } from "~/components/media-player";
+import { Markdown } from "~/components/markdown";
 
 import {
   ResizableHandle,
@@ -18,7 +18,7 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { lesson } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
-  const user = await getUserData(request);
+  const user = await userme(request);
   if (!user) return redirect("/auth/signin");
   const data = await getLessonBySlug(lesson as string, PUBLIC_TOKEN);
   console.dir(data, { depth: null });
@@ -32,8 +32,6 @@ export default function LessonRoute() {
 
   const { title, description, content, resources, player } = data;
   const video = player[0];
-
-  console.log(content);
 
   return (
     <div className="p-2 h-[calc(100vh-72px)]">

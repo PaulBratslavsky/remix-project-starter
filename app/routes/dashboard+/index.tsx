@@ -4,13 +4,13 @@ import { useLoaderData, Link } from "@remix-run/react";
 
 import { getAllCourses } from "~/lib/fetch";
 import { getStrapiMedia, formatDate } from "~/lib/utils";
-import { getUserData } from "~/services/auth/session.server";
 
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
 
 import { SectionLayout } from "~/components/section-layout";
 import { CarouselWrapper } from "~/components/carousel-wrapper";
+import { userme } from "~/services/auth/userme.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,7 +21,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
-  const user = await getUserData(request);
+  const user = await userme(request);
   if (!user) return redirect("/auth/signin");
   const data = await getAllCourses(PUBLIC_TOKEN);
   return json({ headerData: { ...mockData }, courseData: data });

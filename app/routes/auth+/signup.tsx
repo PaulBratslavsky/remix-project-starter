@@ -9,7 +9,8 @@ import { json, redirect } from "@remix-run/node";
 import { useActionData, Link, Form } from "@remix-run/react";
 
 import { register } from "~/services/auth/auth.server";
-import { getUserData, createUserSession } from "~/services/auth/session.server";
+import { createUserSession } from "~/services/auth/session.server";
+import { userme } from "~/services/auth/userme.server";
 
 import { StrapiRegisterFormProps } from "../../types";
 
@@ -28,7 +29,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUserData(request);
+  const user = await userme(request);
   if (user) return redirect("/dashboard");
   return null;
 }
