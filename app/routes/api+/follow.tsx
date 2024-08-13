@@ -10,7 +10,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!user) return null;
   const url = new URL(request.url);
   const documentId = url.searchParams.get("documentId");
-  const courses = user.userProfile.followedCourses;
+  
+  const courses = user.userProfile?.followedCourses || [];
+  
   const isFollowed = !!courses.find(
     (course: { documentId: string }) => course.documentId === documentId
   );
