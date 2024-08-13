@@ -9,7 +9,7 @@ const navItems = [
   {
     id: 1,
     href: "/dashboard",
-    text: "Courses",
+    text: "My Courses",
     isExternal: false,
   },
 ];
