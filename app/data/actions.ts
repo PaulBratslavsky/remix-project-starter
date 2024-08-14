@@ -71,3 +71,20 @@ export async function followCourseAction(
     authToken
   );
 }
+
+export async function createUserProfile(payload: object, authToken: string) {
+  return await mutateData("POST", `/api/user-profiles`, payload, authToken);
+}
+
+export async function updateUserProfile(
+  payload: object,
+  userProfileId: string,
+  authToken: string
+) {
+  return await mutateData(
+    "PUT",
+    `/api/user-profiles/${userProfileId}`,
+    payload,
+    authToken
+  );
+}
