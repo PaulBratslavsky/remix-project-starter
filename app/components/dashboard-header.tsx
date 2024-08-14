@@ -28,7 +28,9 @@ export function DashboardHeader({ user }: StrapiUserMeProps) {
             fill="currentColor"
           />
         </svg>
-        <span className="font-heading text-xl font-bold">Reweb</span>
+        <span className="font-heading text-xl font-bold">
+          Coding After Thirty
+        </span>
       </Link>
       <div className="flex items-center gap-10">
         <nav className="hidden items-center gap-10 md:flex justify-end">
