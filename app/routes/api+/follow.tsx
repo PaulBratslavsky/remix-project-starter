@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { redirect, useFetcher } from "@remix-run/react";
 import { useEffect } from "react";
 import { userme } from "~/services/auth/userme.server";
 import { unfollowCourseAction, followCourseAction } from "~/data/actions";
@@ -25,7 +25,8 @@ export async function action({ request }: LoaderFunctionArgs) {
 
   const user = await userme(request);
   const authToken = await getUserToken(request);
-  const userProfileId = user.userProfile.documentId;
+  const userProfileId = user?.userProfile?.documentId;
+  if (!user || !userProfileId) return redirect("/auth/onboarding");
   const courses = user.userProfile.followedCourses;
 
   const isFollowed = !!courses.find(

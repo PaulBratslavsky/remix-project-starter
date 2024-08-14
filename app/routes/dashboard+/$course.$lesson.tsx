@@ -20,6 +20,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
   const user = await userme(request);
   if (!user) return redirect("/auth/signin");
+  if (!user?.userProfile) return redirect("/auth/onboarding");
   const data = await getLessonBySlug(lesson as string, PUBLIC_TOKEN);
   handleStrapiError(data?.error);
   const courseData = data?.data[0];

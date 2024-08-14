@@ -21,8 +21,7 @@ export async function mutateData(
       },
       body: JSON.stringify({ ...payload }),
     });
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.log("error", error);
     throw error;

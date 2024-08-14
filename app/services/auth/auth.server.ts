@@ -4,9 +4,10 @@ import type { StrapiRegisterFormProps, StrapiLoginFormProps } from "~/types";
 const BASE_URL = getStrapiURL();
 
 export async function register(data: StrapiRegisterFormProps) {
-  const query = `/api/auth/local/register`;
+  const path = `/api/auth/local/register`;
+  const url = new URL(path, BASE_URL);
 
-  const request = await fetch(BASE_URL + query, {
+  const request = await fetch(url.href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,9 +19,10 @@ export async function register(data: StrapiRegisterFormProps) {
 }
 
 export async function login(data: StrapiLoginFormProps) {
-  const query = `/api/auth/local`;
+  const path = `/api/auth/local`;
+  const url = new URL(path, BASE_URL);
 
-  const request = await fetch(BASE_URL + query, {
+  const request = await fetch(url.href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 import type { CourseProps } from "~/types";
-import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { MetaFunction, LoaderFunctionArgs} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { userme } from "~/services/auth/userme.server";
 
@@ -23,7 +23,9 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request } : LoaderFunctionArgs) {
   const user = await userme(request);
-  const followedCourses = user.userProfile?.followedCourses;
+  if (!user) return redirect("/auth/signin");
+  if (!user?.userProfile) return redirect("/auth/onboarding");
+  const followedCourses = user?.userProfile?.followedCourses;
   return json({ headerData: { ...mockData }, courseData: followedCourses || [] });
 }
 
