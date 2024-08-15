@@ -4,7 +4,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 
 import { createUserProfile, updateUserProfile } from "~/data/actions";
 
@@ -30,7 +30,7 @@ import { ZodErrors, StrapiErrors } from "~/components/errors";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Sign In" },
+    { title: "Onboarding" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
@@ -48,15 +48,11 @@ const validationSchema = z.object({
 });
 
 export async function action({ request }: ActionFunctionArgs) {
-  console.log("######## request #########");
   const user = await userme(request);
   const userProfileId = user?.userProfile?.documentId;
   const token = await getUserToken(request);
   const formData = await request.formData();
-
-  const action = formData.get("_action");
-
-  console.log("action", action);
+  const action = formData.get("_action"); 
   let response = null;
 
   const validation = validationSchema.safeParse({
@@ -64,8 +60,6 @@ export async function action({ request }: ActionFunctionArgs) {
     githubLink: formData.get("githubLink"),
     bio: formData.get("bio"),
   });
-
-  console.log("validation", validation);
 
   if (!validation.success) {
     return json({
@@ -97,11 +91,12 @@ export async function action({ request }: ActionFunctionArgs) {
   };
 
   switch (action) {
-    case "createProfile":
+    case "create":
       response = await createUserProfile(createProfilePayload, token);
       break;
 
-    case "updateProfile":
+    case "update":
+      console.log("updateProfilePayload", updateProfilePayload);
       response = await updateUserProfile(
         updateProfilePayload,
         userProfileId as string,
@@ -110,12 +105,15 @@ export async function action({ request }: ActionFunctionArgs) {
       break;
   }
 
-  if (response?.error)
+  if (response?.error) {
     return json({
       data: null,
       formErrors: null,
       strapiError: response.error,
     });
+  }
+
+  return redirect("/courses");
 }
 
 export default function OnboardingRoute() {
@@ -165,13 +163,13 @@ export default function OnboardingRoute() {
               <ZodErrors error={actionData?.formErrors?.bio} />
             </div>
             <Button
-            type="submit"
-            className="ml-auto"
-            name="action"
-            value={hasProfile ? "update" : "create"}
-          >
-            {hasProfile ? "Update Profile" : "Create Profile"}
-          </Button>
+              type="submit"
+              className="ml-auto"
+              name="_action"
+              value={hasProfile ? "update" : "create"}
+            >
+              {hasProfile ? "Update Profile" : "Create Profile"}
+            </Button>
             <StrapiErrors error={actionData?.strapiError} />
           </Form>
         </CardContent>
