@@ -52,46 +52,38 @@ export async function action({ request }: LoaderFunctionArgs) {
       authToken
     );
   } else {
-      await addProfileRelationAction(
-        userProfileId,
-        lessonId as string,
-        "completedLessons",
-        authToken
-      );
+    await addProfileRelationAction(
+      userProfileId,
+      lessonId as string,
+      "completedLessons",
+      authToken
+    );
   }
 
   return json({ isCompleted: !isCompleted });
 }
 export function LessonStatusIcon({ documentId }: { documentId: string }) {
+  const fetcher = useFetcher<typeof loader>();
+  const isCompleted = fetcher.data?.isCompleted;
+
+  useEffect(() => {
+    fetcher.load(`/api/complete?documentId=${documentId}`);
+  }, [documentId]);
+
+  const color = isCompleted ? "text-muted-foreground" : "text-muted";
+
+  return (
+    <CheckIcon className={cn("w-7 h-7 bg-muted rounded-full p-1", color)} />
+  );
+}
+
+export function LessonStatusButton({ documentId }: { documentId: string }) {
   const fetcher = useFetcher<typeof action>();
   const isCompleted = fetcher.data?.isCompleted;
 
   useEffect(() => {
     fetcher.load(`/api/complete?documentId=${documentId}`);
   }, []);
-
-  const color = isCompleted ? "text-muted-foreground" : "text-muted";
-
-  return (
-    <button type="submit" className="border-2 rounded-full">
-      <CheckIcon className={cn("w-7 h-7 bg-muted rounded-full p-1", color)} />
-    </button>
-  );
-}
-
-export function LessonStatusButton({
-  documentId,
-  asIcon,
-}: {
-  documentId: string;
-  asIcon?: boolean;
-}) {
-  const fetcher = useFetcher<typeof action>();
-  const isCompleted = fetcher.data?.isCompleted;
-
-  useEffect(() => {
-    fetcher.load(`/api/complete?documentId=${documentId}`);
-  }, [documentId]);
 
   return (
     <fetcher.Form method="POST" action="/api/complete" className="z-50">
@@ -102,17 +94,13 @@ export function LessonStatusButton({
         defaultValue={isCompleted ? "false" : "true"}
       />
 
-      {asIcon ? (
-        <LessonStatusIcon documentId={documentId} />
-      ) : (
-        <Button
-          variant="outline"
-          className="w-full rounded-sm my-4"
-          type="submit"
-        >
-          {isCompleted ? "Completed" : "Mark as completed"}
-        </Button>
-      )}
+      <Button
+        variant="outline"
+        className="w-full rounded-sm my-4"
+        type="submit"
+      >
+        {isCompleted ? "Completed" : "Mark as completed"}
+      </Button>
     </fetcher.Form>
   );
 }

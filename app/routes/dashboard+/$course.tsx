@@ -73,7 +73,7 @@ export default function DashboardRoute() {
                       </div>
                     </Link>
                     <div className="text-muted-foreground text-sm">
-                      <LessonStatusButton documentId={documentId} asIcon />
+                      <LessonStatusIcon documentId={documentId} />
                     </div>
                   </div>
                 );
