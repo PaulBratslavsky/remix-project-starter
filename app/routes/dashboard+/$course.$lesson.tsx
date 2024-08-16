@@ -7,6 +7,7 @@ import { userme } from "~/services/auth/userme.server";
 
 import { MediaPlayer } from "~/components/media-player";
 import { Markdown } from "~/components/markdown";
+import { LessonStatusButton } from "~/routes/api+/complete";
 
 import {
   ResizableHandle,
@@ -30,7 +31,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export default function LessonRoute() {
   const { data } = useLoaderData<typeof loader>();
 
-  const { title, description, content, resources, player } = data;
+  const { title, description, content, resources, player, documentId } = data;
   const video = player[0];
 
   return (
@@ -38,7 +39,7 @@ export default function LessonRoute() {
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
-            <div className="rounded p-4 flex flex-col gap-4">
+            <div className="rounded flex flex-col gap-4">
               <div className="aspect-video rounded overflow-hidden">
                 <MediaPlayer
                   videoId={video.videoId}
@@ -46,6 +47,8 @@ export default function LessonRoute() {
                   controls
                 />
               </div>
+              <LessonStatusButton documentId={documentId} />
+
               <div>
                 <h1 className="text-3xl mt-2 mb-4 font-bold">{title}</h1>
                 <p className="text-lg mb-4 text-muted-foreground">

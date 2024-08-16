@@ -28,16 +28,17 @@ export async function mutateData(
   }
 }
 
-export async function unfollowCourseAction(
+export async function removeProfileRelationAction(
   userProfileId: string,
-  courseId: string,
-  authToken: string
+  documentId: string,
+  relationships: string,
+  authToken: string,
 ) {
   const payload = {
     data: {
-      followedCourses: {
+      [relationships]: {
         disconnect: {
-          documentId: courseId,
+          documentId: documentId,
         },
       },
     },
@@ -50,16 +51,17 @@ export async function unfollowCourseAction(
   );
 }
 
-export async function followCourseAction(
+export async function addProfileRelationAction(
   userProfileId: string,
-  courseId: string,
-  authToken: string
+  documentId: string,
+  relationships: string,
+  authToken: string,
 ) {
   const payload = {
     data: {
-      followedCourses: {
+      [relationships]: {
         connect: {
-          documentId: courseId,
+          documentId: documentId,
         },
       },
     },

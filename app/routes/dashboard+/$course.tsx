@@ -14,7 +14,7 @@ import {
 
 import { Separator } from "~/components/ui/separator";
 import { userme } from "~/services/auth/userme.server";
-import { LessonStatusIcon } from "~/routes/api+/completed";
+import { LessonStatusButton, LessonStatusIcon } from "~/routes/api+/complete";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { course } = params;
@@ -38,7 +38,6 @@ interface LessonListProps {
 export default function DashboardRoute() {
   const params = useParams();
   const { data } = useLoaderData<typeof loader>();
-
   const courseList = data.lessons;
 
   return (
@@ -53,29 +52,30 @@ export default function DashboardRoute() {
                 const isSelected = params.lesson === lesson.slug;
                 const { title, documentId, slug } = lesson;
                 return (
-                  <Link
+                  <div
                     key={documentId}
-                    to={slug}
                     className={cn(
                       "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
                       isSelected ? "bg-muted" : ""
                     )}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <h3 className="font-medium">{title}</h3>
-                        {/* <p className="text-sm text-muted-foreground">
+                    <Link to={slug} className="w-full bg-green=500">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <h3 className="font-medium">{title}</h3>
+                          {/* <p className="text-sm text-muted-foreground">
                                   {description}
                                 </p> */}
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                     <div className="text-muted-foreground text-sm">
-                      <LessonStatusIcon documentId={documentId}/>
+                      <LessonStatusButton documentId={documentId} asIcon />
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
             </div>
@@ -92,5 +92,3 @@ export default function DashboardRoute() {
     </TooltipProvider>
   );
 }
-
-

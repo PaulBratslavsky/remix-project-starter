@@ -2,7 +2,10 @@ import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { redirect, useFetcher } from "@remix-run/react";
 import { useEffect } from "react";
 import { userme } from "~/services/auth/userme.server";
-import { unfollowCourseAction, followCourseAction } from "~/data/actions";
+import {
+  addProfileRelationAction,
+  removeProfileRelationAction,
+} from "~/data/actions";
 import { getUserToken } from "~/services/auth/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -10,9 +13,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!user) return null;
   const url = new URL(request.url);
   const documentId = url.searchParams.get("documentId");
-  
+
   const courses = user.userProfile?.followedCourses || [];
-  
+
   const isFollowed = !!courses.find(
     (course: { documentId: string }) => course.documentId === documentId
   );
@@ -25,6 +28,7 @@ export async function action({ request }: LoaderFunctionArgs) {
 
   const user = await userme(request);
   const authToken = await getUserToken(request);
+  
   const userProfileId = user?.userProfile?.documentId;
   if (!user || !userProfileId) return redirect("/auth/onboarding");
   const courses = user.userProfile.followedCourses;
@@ -34,10 +38,19 @@ export async function action({ request }: LoaderFunctionArgs) {
   );
 
   if (isFollowed) {
-    await unfollowCourseAction(userProfileId, courseId as string , authToken);
-  } 
-  else {
-    await followCourseAction(userProfileId, courseId as string , authToken);
+    await removeProfileRelationAction(
+      userProfileId,
+      courseId as string,
+      "followedCourses",
+      authToken
+    );
+  } else {
+    await addProfileRelationAction(
+      userProfileId,
+      courseId as string,
+      "followedCourses",
+      authToken
+    );
   }
 
   return json({ isFollowed: !isFollowed, user });
