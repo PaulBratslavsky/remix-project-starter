@@ -14,6 +14,7 @@ import {
 
 import { Separator } from "~/components/ui/separator";
 import { userme } from "~/services/auth/userme.server";
+import { LessonStatusIcon } from "~/routes/api+/completed";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { course } = params;
@@ -72,7 +73,7 @@ export default function DashboardRoute() {
                       </div>
                     </div>
                     <div className="text-muted-foreground text-sm">
-                      <CheckIcon className="w-5 h-5" />
+                      <LessonStatusIcon documentId={documentId}/>
                     </div>
                   </Link>
                 );
@@ -92,21 +93,4 @@ export default function DashboardRoute() {
   );
 }
 
-function CheckIcon(props: React.ComponentPropsWithoutRef<"svg">) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
+

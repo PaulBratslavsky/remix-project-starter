@@ -11,6 +11,9 @@ const query = qs.stringify({
         followedCourses: {
           populate: "*",
         },
+        completedLessons: {
+          populate: "*",
+        }
       },
     },
   },
