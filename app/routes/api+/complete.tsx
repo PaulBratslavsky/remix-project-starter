@@ -81,9 +81,11 @@ export function LessonStatusButton({ documentId }: { documentId: string }) {
   const fetcher = useFetcher<typeof action>();
   const isCompleted = fetcher.data?.isCompleted;
 
+  console.log(documentId);
+
   useEffect(() => {
     fetcher.load(`/api/complete?documentId=${documentId}`);
-  }, []);
+  }, [documentId]);
 
   return (
     <fetcher.Form method="POST" action="/api/complete" className="z-50">
