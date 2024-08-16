@@ -29,8 +29,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: LoaderFunctionArgs) {
-  const formData = await request.formData();
-  const lessonId = formData.get("documentId");
+  const url = new URL(request.url);
+  const lessonId = url.searchParams.get("documentId");
 
   const user = await userme(request);
   const authToken = await getUserToken(request);
@@ -62,7 +62,7 @@ export async function action({ request }: LoaderFunctionArgs) {
 
   return json({ isCompleted: !isCompleted });
 }
-export function LessonStatusIcon({ documentId }: { documentId: string }) {
+export function LessonStatusIcon({ documentId }: { readonly documentId: string }) {
   const fetcher = useFetcher<typeof loader>();
   const isCompleted = fetcher.data?.isCompleted;
 
@@ -77,19 +77,17 @@ export function LessonStatusIcon({ documentId }: { documentId: string }) {
   );
 }
 
-export function LessonStatusButton({ documentId }: { documentId: string }) {
+export function LessonStatusButton({ documentId }: { readonly documentId: string }) {
   const fetcher = useFetcher<typeof action>();
   const isCompleted = fetcher.data?.isCompleted;
 
-  console.log(documentId);
 
   useEffect(() => {
     fetcher.load(`/api/complete?documentId=${documentId}`);
   }, [documentId]);
 
   return (
-    <fetcher.Form method="POST" action="/api/complete" className="z-50">
-      <input hidden name="documentId" defaultValue={documentId} />
+    <fetcher.Form method="POST" action={`/api/complete?documentId=${documentId}`} className="z-50">
       <input
         hidden
         name="isCompleted"

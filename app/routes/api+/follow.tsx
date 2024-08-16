@@ -23,8 +23,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: LoaderFunctionArgs) {
-  const formData = await request.formData();
-  const courseId = formData.get("documentId");
+  const url = new URL(request.url);
+  const courseId = url.searchParams.get("documentId");
 
   const user = await userme(request);
   const authToken = await getUserToken(request);
@@ -56,7 +56,7 @@ export async function action({ request }: LoaderFunctionArgs) {
   return json({ isFollowed: !isFollowed, user });
 }
 
-export function FollowCourseButton({ documentId }: { documentId: string }) {
+export function FollowCourseButton({ documentId }: { readonly documentId: string }) {
   const fetcher = useFetcher<typeof action>();
   const isFollowed = fetcher.data?.isFollowed;
 
@@ -91,7 +91,7 @@ export function FollowCourseButton({ documentId }: { documentId: string }) {
   if (!user) return null;
 
   return (
-    <fetcher.Form method="POST" action="/api/follow" className="z-50">
+    <fetcher.Form method="POST" action={`/api/follow?documentId=${documentId}`} className="z-50">
       <fieldset disabled={false}>
         <input hidden name="documentId" defaultValue={documentId} />
         <input
