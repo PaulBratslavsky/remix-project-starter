@@ -66,7 +66,7 @@ export default function LessonRoute() {
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={0}>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
-            {content && <Markdown content={content} classNames="rich-text" />}
+            {content && <Markdown content={content} classNames="rich-text w-full" />}
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
