@@ -46,7 +46,7 @@ export default function DashboardRoute() {
     <TooltipProvider delayDuration={0}>
       <Separator />
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={250}>
+        <ResizablePanel defaultSize={25}>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-4">
             <h2 className="text-xl font-bold mb-4">Lessons</h2>
             <div className="space-y-2">
@@ -85,7 +85,7 @@ export default function DashboardRoute() {
         </ResizablePanel>
 
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={655}>
+        <ResizablePanel defaultSize={75}>
           <Outlet />
         </ResizablePanel>
       </ResizablePanelGroup>

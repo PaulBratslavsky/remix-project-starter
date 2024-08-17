@@ -37,7 +37,7 @@ export default function LessonRoute() {
   return (
     <div className="p-2 h-[calc(100vh-72px)]">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
+        <ResizablePanel defaultSize={60}>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
             <div className="rounded flex flex-col gap-4">
               <div className="aspect-video rounded overflow-hidden">
@@ -64,7 +64,7 @@ export default function LessonRoute() {
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={0}>
+        <ResizablePanel defaultSize={40}>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
             {content && <Markdown content={content} classNames="rich-text w-full" />}
           </ScrollArea>
