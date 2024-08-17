@@ -57,6 +57,13 @@ body {
 /******************************************* 
   Rich Text Styles
 *******************************************/ 
+.rich-text {
+  @apply relative;
+}
+
+.rich-text article {
+  @apply absolute inset-0;
+}
 
 /* Headers */
 .rich-text article  h1 {
@@ -172,6 +179,14 @@ body {
   Rich Text Resources Styles
 *******************************************/ 
 
+.resources-text {
+  @apply relative;
+}
+
+.resources-text article {
+  @apply absolute inset-0;
+}
+
 /* Headers */
 .resources-text article  h1 {
   @apply text-2xl font-bold mb-9 text-secondary-foreground tracking-tight leading-normal;
@@ -208,12 +223,12 @@ body {
 
 /* Typographic replacements */
 .resources-text article  p {
-  @apply mb-2 text-lg leading-8 text-muted-foreground;
+  @apply mb-4 text-lg leading-8 text-muted-foreground;
 }
 
 /* Emphasis */
 .resources-text article  strong {
-  @apply font-bold;
+  @apply font-bold text-secondary-foreground;
 }
 
 .resources-text article  em {
