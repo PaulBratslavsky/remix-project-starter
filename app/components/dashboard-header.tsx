@@ -8,13 +8,19 @@ import { UserNavButton } from "~/components/user-nav-button";
 const navItems = [
   {
     id: 1,
+    href: "/courses",
+    text: "All Courses",
+    isExternal: false,
+  },
+  {
+    id: 2,
     href: "/dashboard",
     text: "My Courses",
     isExternal: false,
   },
 ];
 
-export function DashboardHeader({ user }: StrapiUserMeProps) {
+export function DashboardHeader({ user }: Readonly<StrapiUserMeProps>) {
   return (
     <header className="flex items-center justify-between gap-10 py-4 px-6">
       <Link to="/" className="flex items-center gap-3">

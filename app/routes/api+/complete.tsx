@@ -62,7 +62,13 @@ export async function action({ request }: LoaderFunctionArgs) {
 
   return json({ isCompleted: !isCompleted });
 }
-export function LessonStatusIcon({ documentId }: { readonly documentId: string }) {
+export function LessonStatusIcon({
+  documentId,
+  isSelected,
+}: {
+  readonly documentId: string;
+  readonly isSelected: boolean;
+}) {
   const fetcher = useFetcher<typeof loader>();
   const isCompleted = fetcher.data?.isCompleted;
 
@@ -70,16 +76,25 @@ export function LessonStatusIcon({ documentId }: { readonly documentId: string }
     fetcher.load(`/api/complete?documentId=${documentId}`);
   }, [documentId]);
 
+  const isLoading = fetcher.state === "loading";
+
   const color = isCompleted ? "text-muted-foreground" : "text-muted";
+  const pulseClass = isLoading && isSelected ? "animate-pulse bg-muted" : " bg-muted";
 
   return (
-    <CheckIcon className={cn("w-7 h-7 bg-muted rounded-full p-1", color)} />
+    <CheckIcon className={cn("w-7 h-7 bg-muted rounded-full p-1", pulseClass, color)} />
   );
 }
 
-export function LessonStatusButton({ documentId }: { readonly documentId: string }) {
+export function LessonStatusButton({
+  documentId,
+}: {
+  readonly documentId: string;
+}) {
   const fetcher = useFetcher<typeof action>();
   const isCompleted = fetcher.data?.isCompleted;
+
+  const isPending = fetcher.state === "submitting";
 
 
   useEffect(() => {
@@ -87,7 +102,11 @@ export function LessonStatusButton({ documentId }: { readonly documentId: string
   }, [documentId]);
 
   return (
-    <fetcher.Form method="POST" action={`/api/complete?documentId=${documentId}`} className="z-50">
+    <fetcher.Form
+      method="POST"
+      action={`/api/complete?documentId=${documentId}`}
+      className="z-50"
+    >
       <input
         hidden
         name="isCompleted"
@@ -96,7 +115,7 @@ export function LessonStatusButton({ documentId }: { readonly documentId: string
 
       <Button
         variant="outline"
-        className="w-full rounded-sm my-4"
+        className={cn("w-full rounded-sm my-4", isPending ? "animate-pulse" : "")}
         type="submit"
       >
         {isCompleted ? "Completed" : "Mark as completed"}

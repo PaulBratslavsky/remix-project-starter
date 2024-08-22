@@ -10,7 +10,7 @@ const navItems = [
   {
     id: 1,
     href: "/courses",
-    text: "Courses",
+    text: "All Courses",
     isExternal: false,
   },
 
@@ -22,7 +22,7 @@ const navItems = [
   },
 ];
 
-export function Header({ user }: StrapiUserMeProps) {
+export function Header({ user }: Readonly<StrapiUserMeProps>) {
   return (
     <header className="flex items-center justify-between gap-10 py-4 container">
       <Link to="/" className="flex items-center gap-3">

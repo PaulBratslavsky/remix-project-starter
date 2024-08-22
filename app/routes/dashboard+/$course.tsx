@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useLoaderData, Link, Outlet, useParams } from "@remix-run/react";
+import { useLoaderData, NavLink, Outlet, useParams } from "@remix-run/react";
 import { cn, handleStrapiError } from "~/lib/utils";
 
 import { getCourseBySlug } from "~/data/loaders";
@@ -54,13 +54,17 @@ export default function DashboardRoute() {
                 const isSelected = params.lesson === lesson.slug;
                 const { title, documentId, slug } = lesson;
                 return (
-                  <Link
+                  <NavLink
                     key={documentId}
                     to={slug}
-                    className={cn(
-                      "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
-                      isSelected ? "bg-muted" : ""
-                    )}
+                    prefetch="intent"
+                    className={({ isActive, isPending }) => {
+                      return cn(
+                        "flex items-center justify-between bg-background rounded p-3 cursor-pointer hover:bg-muted transition-colors",
+                        isActive ? "bg-muted" : "",
+                        isPending ? "animate-pulse" : ""
+                      );
+                    }}
                   >
                     <div className="flex items-center gap-3">
                       <div className="flex-none bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
@@ -68,15 +72,15 @@ export default function DashboardRoute() {
                       </div>
                       <div>
                         <h3 className="font-medium">{title}</h3>
-                        {/* <p className="text-sm text-muted-foreground">
-                                  {description}
-                                </p> */}
                       </div>
                     </div>
                     <div className="text-muted-foreground text-sm">
-                      <LessonStatusIcon documentId={documentId} />
+                      <LessonStatusIcon
+                        documentId={documentId}
+                        isSelected={isSelected}
+                      />
                     </div>
-                  </Link>
+                  </NavLink>
                 );
               })}
             </div>
