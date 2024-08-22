@@ -15,7 +15,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function SinglePostRoute() {
   const { data } = useLoaderData<typeof loader>();
   return (
-    <div className=" px-6 py-24 lg:px-8">
+    <div className="min-h-screen overflow-auto px-6 py-16 lg:px-8">
       <div className="mx-auto max-w-3xl text-base leading-7 ">
         <h1 className="text-3xl font-bold mb-8">{data.title}</h1>
         <Markdown content={data.content} classNames="rich-text"/>

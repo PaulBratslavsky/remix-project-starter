@@ -46,12 +46,11 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className="flex flex-col min-h-screen justify-between">
+        <div className="flex flex-col min-h-screen">
           {isDashboard ? <DashboardHeader user={data.user} /> : <Header user={data.user}/>}
-          <main className="mb-auto h-full">{children}</main>
+          <main className="flex-grow">{children}</main>
           {!isDashboard && <Footer />}
         </div>
-
         <ScrollRestoration />
         <Scripts />
       </body>
