@@ -40,8 +40,6 @@ export default function DashboardRoute() {
   const { data } = useLoaderData<typeof loader>();
   const courseList = data.lessons;
 
-  console.log(courseList);
-
   return (
     <TooltipProvider delayDuration={0}>
       <Separator />

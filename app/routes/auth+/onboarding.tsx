@@ -96,7 +96,6 @@ export async function action({ request }: ActionFunctionArgs) {
       break;
 
     case "update":
-      console.log("updateProfilePayload", updateProfilePayload);
       response = await updateUserProfile(
         updateProfilePayload,
         userProfileId as string,
