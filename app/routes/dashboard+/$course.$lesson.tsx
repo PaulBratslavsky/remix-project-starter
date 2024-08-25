@@ -26,14 +26,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (!user) {
     const url = new URL(request.url);
     const redirectTo = url.pathname + url.search;
-
-    console.log("Setting redirectTo:", redirectTo);
-
-    // Set the redirect cookie and get the headers to set in the response
     const { headers } = await setRedirectToSession(request, redirectTo);
-
-    // Redirect the user to the login page, including the headers to set the cookie
-    return redirect('/auth/signin', { headers });
+    return redirect("/auth/signin", { headers });
   }
 
   if (!user?.userProfile) return redirect("/auth/onboarding");
