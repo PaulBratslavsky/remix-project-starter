@@ -6,6 +6,7 @@ import { getStrapiSocialAuthUrl, getStrapiURL } from "~/lib/utils";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { createUserSession } from "~/services/auth/session.server";
 
+
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const provider = params?.provider;
   if (!provider) return json({ error: "Provider not found" }, { status: 404 });
@@ -21,7 +22,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   if (data?.error) return json({ error: data.error }, { status: 400 });
 
-  return createUserSession(data.jwt, "/dashboard");
+  return createUserSession(data.jwt, request);
 }
 
 export function SocialButtonProvider({

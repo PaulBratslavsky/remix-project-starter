@@ -1,18 +1,41 @@
-import { createCookieSessionStorage, redirect } from "@remix-run/node"; // or cloudflare/deno
+import {
+  createCookieSessionStorage,
+  redirect,
+} from "@remix-run/node"; // or cloudflare/deno
 
 const sessionSecret = process.env.SESSION_SECRET || "Testing";
-if (!sessionSecret) throw new Error('Please set the SESSION_SECRET environment variable');
+if (!sessionSecret)
+  throw new Error("Please set the SESSION_SECRET environment variable");
 
-const { getSession, commitSession, destroySession } = createCookieSessionStorage({
+// Create separate session storage for the redirect session
+const redirectSessionStorage = createCookieSessionStorage({
   cookie: {
-    name: 'user-session',
+    name: "redirect-session",
     secrets: [sessionSecret],
-    path: '/',
+    path: "/",
     httpOnly: true,
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 5, // 5 minutes
+  },
+});
+
+const { getSession: getRedirectSession, commitSession: commitRedirectSession, destroySession: destroyRedirectSession } =
+  redirectSessionStorage;
+
+// Create session storage for the user session
+const userSessionStorage = createCookieSessionStorage({
+  cookie: {
+    name: "user-session",
+    secrets: [sessionSecret],
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7, // 1 week
   },
 });
+
+const { getSession, commitSession, destroySession } = userSessionStorage;
 
 interface UserProps {
   user: {
@@ -24,33 +47,65 @@ interface UserProps {
     blocked: boolean;
     createdAt: string;
     updatedAt: string;
-  },
-  jwt: string
+  };
+  jwt: string;
 }
 
-export async function createUserSession(user: UserProps, redirectTo: string,) {
-  "FROM CREATE USER SESSION";
-  const sessionData = await getSession();
-  sessionData.set('user-session', user);
+export async function createUserSession(user: UserProps, request: Request) {
+  const sessionData = await getSession(request.headers.get("Cookie"));
+  sessionData.set("user-session", user);
+
+  const sessionCookie = await commitSession(sessionData);
+
+  // Retrieve the redirectTo value from the separate redirect session
+  const redirectSession = await getRedirectSession(request.headers.get("Cookie"));
+  const redirectTo = redirectSession.get("redirectTo") || "/dashboard";
+
+  console.log('redirectTo from redirect session:', redirectTo);  // Debug log
+
+  // Clear the redirect session after using it
+  const clearRedirectCookieHeader = await destroyRedirectSession(redirectSession);
+
   return redirect(redirectTo, {
     headers: {
-      "Set-Cookie": await commitSession(sessionData),
+      "Set-Cookie": `${sessionCookie}, ${clearRedirectCookieHeader}`,
     },
   });
 }
 
+export async function setRedirectToSession(request: Request, redirectTo: string) {
+  console.log("Setting redirectTo in separate session");
+
+  const session = await getRedirectSession(request.headers.get("Cookie"));
+
+  console.log("Redirect session before setting:", session.data);
+
+  session.set("redirectTo", redirectTo);
+
+  const setCookieHeader = await commitRedirectSession(session);
+
+  console.log("Redirect session after setting:", session.data);
+  console.log("Set-Cookie header for redirect session:", setCookieHeader);
+
+  return {
+    headers: {
+      "Set-Cookie": setCookieHeader,
+    },
+  };
+}
+
 function getUserSession(request: Request) {
-  return getSession(request.headers.get('Cookie'));
+  return getSession(request.headers.get("Cookie"));
 }
 
 export async function getUserToken(request: Request) {
   const session = await getUserSession(request);
-  return session.get('user-session');
+  return session.get("user-session");
 }
 
 export async function logout(request: Request) {
   const sessionData = await getUserSession(request);
   return redirect("/", {
-    headers: { 'Set-Cookie': await destroySession(sessionData) }
-  })
+    headers: { "Set-Cookie": await destroySession(sessionData) },
+  });
 }

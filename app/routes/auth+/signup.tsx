@@ -19,7 +19,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
-import { SocialButtonProvider } from "~/routes/api+/connect.$provider.redirect"
+import { SocialButtonProvider } from "~/routes/api+/connect.$provider.redirect";
 
 import { ZodErrors, StrapiErrors } from "~/components/errors";
 
@@ -43,6 +43,7 @@ const validationSchema = z.object({
     .string()
     .min(6, { message: "Password Must be 6 or more characters long" }),
 });
+
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -70,7 +71,8 @@ export async function action({ request }: ActionFunctionArgs) {
       strapiError: response.error,
     });
 
-  return createUserSession(response.jwt, "/dashboard");
+
+  return createUserSession(response.jwt, request);
 }
 
 interface StrapiErrorsProps {
