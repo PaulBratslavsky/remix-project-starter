@@ -5,13 +5,12 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-
-import { useActionData, Form } from "@remix-run/react";
+import { useActionData, Form, Link } from "@remix-run/react";
 
 import { login } from "~/services/auth/auth.server";
 import { userme } from "~/services/auth/userme.server";
 import { createUserSession } from "~/services/auth/session.server";
-import { SocialButtonProvider } from "~/routes/api+/connect.$provider.redirect"
+import { SocialButtonProvider } from "~/routes/api+/connect.$provider.redirect";
 
 import { StrapiLoginFormProps } from "~/types";
 
@@ -69,7 +68,7 @@ export async function action({ request }: ActionFunctionArgs) {
       strapiError: response.error,
     });
 
-  return createUserSession(response.jwt, "/dashboard");
+  return createUserSession(response.jwt, request);
 }
 
 interface StrapiErrorsProps {
@@ -123,8 +122,12 @@ export default function LoginRoute() {
         <div className="space-y-4">
           <SocialButtonProvider provider="github" />
         </div>
+
         <div className="mt-4 text-center text-sm">
           <span className="mr-2">Don&apos;t have an account?</span>
+          <Link to="/auth/signup" className="underline">
+            Sign up
+          </Link>
         </div>
       </div>
     </div>

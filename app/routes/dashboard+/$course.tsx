@@ -5,6 +5,7 @@ import { cn, handleStrapiError } from "~/lib/utils";
 import { getCourseBySlug } from "~/data/loaders";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { setRedirectToSession } from "~/services/auth/session.server";
 
 import {
   ResizableHandle,
@@ -16,13 +17,23 @@ import { Separator } from "~/components/ui/separator";
 import { userme } from "~/services/auth/userme.server";
 import { LessonStatusIcon } from "~/routes/api+/complete";
 
+
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { course } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
   const user = await userme(request);
-  if (!user) return redirect("/auth/signin");
+
+  if (!user) {
+    const url = new URL(request.url);
+    const redirectTo = url.pathname + url.search;
+    const { headers } = await setRedirectToSession(request, redirectTo);
+    return redirect("/auth/signin", { headers });
+  }
+
   if (!user?.userProfile) return redirect("/auth/onboarding");
   const data = await getCourseBySlug(course as string, PUBLIC_TOKEN);
+
+
   handleStrapiError(data?.error);
   const courseData = data?.data[0];
   return json({ data: courseData });

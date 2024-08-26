@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 
 import { FollowCourseButton } from "~/routes/api+/follow";
 
-export function CourseItem({ course }: { course: CourseProps }) {
+export function CourseItem({ course }: {  readonly course: CourseProps }) {
   const { documentId, title, description, slug,  createdAt, image } = course;
   const imageUrl = getStrapiMedia(image?.formats?.medium?.url);
   return (

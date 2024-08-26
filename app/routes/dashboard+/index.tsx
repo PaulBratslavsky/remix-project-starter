@@ -1,8 +1,9 @@
 import type { CourseProps } from "~/types";
-import type { MetaFunction, LoaderFunctionArgs} from "@remix-run/node";
+import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { userme } from "~/services/auth/userme.server";
+import { setRedirectToSession } from "~/services/auth/session.server";
 
 import {
   Carousel,
@@ -20,15 +21,25 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-
-export async function loader({ request } : LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const user = await userme(request);
-  if (!user) return redirect("/auth/signin");
-  if (!user?.userProfile) return redirect("/auth/onboarding");
-  const followedCourses = user?.userProfile?.followedCourses;
-  return json({ headerData: { ...mockData }, courseData: followedCourses || [] });
-}
 
+  if (!user) {
+    const url = new URL(request.url);
+    const redirectTo = url.pathname + url.search;
+    const { headers } = await setRedirectToSession(request, redirectTo);
+    return redirect("/auth/signin", { headers });
+  }
+
+  if (!user?.userProfile) return redirect("/auth/onboarding");
+
+  const followedCourses = user?.userProfile?.followedCourses;
+
+  return json({
+    headerData: { ...mockData },
+    courseData: followedCourses || [],
+  });
+}
 
 export default function DashboardCoursesRoute() {
   const { headerData, courseData } = useLoaderData<typeof loader>();

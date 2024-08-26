@@ -8,6 +8,7 @@ import { userme } from "~/services/auth/userme.server";
 import { MediaPlayer } from "~/components/media-player";
 import { Markdown } from "~/components/markdown";
 import { LessonStatusButton } from "~/routes/api+/complete";
+import { setRedirectToSession } from "~/services/auth/session.server";
 
 import {
   ResizableHandle,
@@ -17,11 +18,20 @@ import {
 import { ScrollArea } from "~/components/ui/scroll-area";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
+  console.log("Lesson Dashboard");
   const { lesson } = params;
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
   const user = await userme(request);
-  if (!user) return redirect("/auth/signin");
+
+  if (!user) {
+    const url = new URL(request.url);
+    const redirectTo = url.pathname + url.search;
+    const { headers } = await setRedirectToSession(request, redirectTo);
+    return redirect("/auth/signin", { headers });
+  }
+
   if (!user?.userProfile) return redirect("/auth/onboarding");
+
   const data = await getLessonBySlug(lesson as string, PUBLIC_TOKEN);
   handleStrapiError(data?.error);
   const courseData = data?.data[0];
@@ -66,7 +76,9 @@ export default function LessonRoute() {
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={40}>
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
-            {content && <Markdown content={content} classNames="rich-text w-full" />}
+            {content && (
+              <Markdown content={content} classNames="rich-text w-full" />
+            )}
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
