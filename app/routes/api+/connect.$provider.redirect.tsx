@@ -33,7 +33,7 @@ export function SocialButtonProvider({
   const providerUrl = getStrapiSocialAuthUrl(provider);
   const providerName = provider.charAt(0).toUpperCase() + provider.slice(1);
   return (
-    <Button asChild variant="outline" className="w-full" disabled={true}>
+    <Button asChild variant="outline" className="w-full" >
       <Link to={providerUrl}>
         {getProviderIcon(provider)}
         {`Join with ${providerName}`}
