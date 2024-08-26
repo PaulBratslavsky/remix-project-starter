@@ -56,12 +56,8 @@ export async function createUserSession(user: UserProps, request: Request) {
   sessionData.set("user-session", user);
 
   const sessionCookie = await commitSession(sessionData);
-
-  // Retrieve the redirectTo value from the separate redirect session
   const redirectSession = await getRedirectSession(request.headers.get("Cookie"));
   const redirectTo = redirectSession.get("redirectTo") || "/dashboard";
-
-  console.log('redirectTo from redirect session:', redirectTo);  // Debug log
 
   // Clear the redirect session after using it
   const clearRedirectCookieHeader = await destroyRedirectSession(redirectSession);
@@ -74,19 +70,9 @@ export async function createUserSession(user: UserProps, request: Request) {
 }
 
 export async function setRedirectToSession(request: Request, redirectTo: string) {
-  console.log("Setting redirectTo in separate session");
-
   const session = await getRedirectSession(request.headers.get("Cookie"));
-
-  console.log("Redirect session before setting:", session.data);
-
   session.set("redirectTo", redirectTo);
-
   const setCookieHeader = await commitRedirectSession(session);
-
-  console.log("Redirect session after setting:", session.data);
-  console.log("Set-Cookie header for redirect session:", setCookieHeader);
-
   return {
     headers: {
       "Set-Cookie": setCookieHeader,
