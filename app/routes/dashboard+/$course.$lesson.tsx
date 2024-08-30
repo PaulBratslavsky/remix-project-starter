@@ -43,6 +43,7 @@ export default function LessonRoute() {
 
   const { title, description, content, resources, player, documentId } = data;
   const video = player[0];
+  const videoId = video?.videoId;
 
   return (
     <div className="p-2 h-[calc(100vh-72px)]">
@@ -51,11 +52,17 @@ export default function LessonRoute() {
           <ScrollArea className="h-[calc(100vh-72px)] w-full p-8">
             <div className="rounded flex flex-col gap-4">
               <div className="aspect-video rounded overflow-hidden">
-                <MediaPlayer
-                  videoId={video.videoId}
-                  timestamp={video.timecode}
-                  controls
-                />
+                {videoId ? (
+                  <MediaPlayer
+                    videoId={video?.videoId}
+                    timestamp={video?.timecode}
+                    controls
+                  />
+                ) : (
+                  <div className="aspect-video bg-muted flex justify-center items-center">
+                    <p>No video added</p>
+                  </div>
+                )}
               </div>
               <LessonStatusButton documentId={documentId} />
 
