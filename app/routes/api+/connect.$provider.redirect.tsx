@@ -32,6 +32,8 @@ export function SocialButtonProvider({
 }) {
   const providerUrl = getStrapiSocialAuthUrl(provider);
   const providerName = provider.charAt(0).toUpperCase() + provider.slice(1);
+  // this is disabled for now while we fix the backend to handle this logic.
+  return null;
   return (
     <Button asChild variant="outline" className="w-full" disabled={true}>
       <Link to={providerUrl}>
