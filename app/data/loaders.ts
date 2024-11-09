@@ -120,3 +120,36 @@ export async function getPostBySlug(slug: string, token?: string) {
 
   return await fetchData(url.href, token);
 }
+
+export async function getAllTopics(
+  query: string = "",
+  page: number = 1,
+  token?: string
+) {
+  const PAGE_SIZE = 6;
+  const path = "/api/topics";
+
+  const url = new URL(path, BASE_URL);
+
+
+  url.search = qs.stringify({
+    sort: { createdAt: "desc" },
+    populate: {
+      user: {
+        fields: ["name"],
+      },
+    },
+    filters: {
+      $or: [
+        { title: { $containsi: query } },
+        { description: { $containsi: query } },
+      ],
+    },
+    pagination: {
+      pageSize: PAGE_SIZE,
+      page: page,
+    },
+  });
+
+  return await fetchData(url.href, token);
+}

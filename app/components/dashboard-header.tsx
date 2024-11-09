@@ -18,6 +18,13 @@ const navItems = [
     text: "My Courses",
     isExternal: false,
   },
+
+  {
+    id: 3,
+    href: "/topics",
+    text: "Topics & Questions",
+    isExternal: false,
+  },
 ];
 
 export function DashboardHeader({ user }: Readonly<StrapiUserMeProps>) {
