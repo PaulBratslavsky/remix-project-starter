@@ -18,7 +18,13 @@ import {
 } from "~/components/ui/table";
 import { Badge } from "~/components/ui/badge";
 
-import { ThumbsUp } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "~/components/ui/hover-card";
+
+import { Eye, ThumbsUp } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -85,7 +91,26 @@ export default function BlogIndexRoute() {
                 </Badge>
               </TableCell>
               <TableCell className="max-w-xs truncate">
-                {topic.description}
+                <HoverCard>
+                  <HoverCardTrigger className="cursor-pointer flex items-center">
+                    {topic.description.slice(0, 100).slice(0, 35) +
+                      " [ See more ]"}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-3/4 rounded shadow-md text-wrap">
+                    <p className="text-sm my-6" >{topic.description}</p>
+                    <form>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        type="submit"
+                        disabled
+                      >
+                        <ThumbsUp className="mr-2 h-4 w-4" />
+                        Upvote
+                      </Button>
+                    </form>
+                  </HoverCardContent>
+                </HoverCard>
               </TableCell>
               <TableCell>{formatDate(topic.createdAt)}</TableCell>
               <TableCell>{topic.upvotes}</TableCell>
