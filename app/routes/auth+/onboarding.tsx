@@ -5,6 +5,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
+
 import { redirect } from "@remix-run/node";
 
 import { createUserProfile, updateUserProfile } from "~/data/actions";

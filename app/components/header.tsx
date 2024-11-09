@@ -20,6 +20,12 @@ const navItems = [
     text: "Blog",
     isExternal: false,
   },
+  {
+    id: 3,
+    href: "/topics",
+    text: "Topics & Questions",
+    isExternal: false,
+  },
 ];
 
 export function Header({ user }: Readonly<StrapiUserMeProps>) {
