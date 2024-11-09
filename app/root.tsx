@@ -8,7 +8,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
-import { LinksFunction, LoaderFunctionArgs, json } from "@remix-run/node";
+import { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import { userme } from "./services/auth/userme.server";
 
@@ -30,7 +30,7 @@ export const links: LinksFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await userme(request);
-  return json({ user });
+  return { user };
 }
 
 

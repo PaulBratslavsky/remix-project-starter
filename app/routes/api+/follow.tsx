@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs } from "@remix-run/node";
 import { redirect, useFetcher } from "@remix-run/react";
 import { useEffect } from "react";
 import { userme } from "~/services/auth/userme.server";
@@ -19,7 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const isFollowed = !!courses.find(
     (course: { documentId: string }) => course.documentId === documentId
   );
-  return json({ isFollowed, user });
+  return { isFollowed, user };
 }
 
 export async function action({ request }: LoaderFunctionArgs) {
@@ -53,7 +53,7 @@ export async function action({ request }: LoaderFunctionArgs) {
     );
   }
 
-  return json({ isFollowed: !isFollowed, user });
+  return { isFollowed: !isFollowed, user };
 }
 
 export function FollowCourseButton({ documentId }: { readonly documentId: string }) {

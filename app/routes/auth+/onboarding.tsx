@@ -1,10 +1,11 @@
 import z from "zod";
+
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 
 import { createUserProfile, updateUserProfile } from "~/data/actions";
 
@@ -38,7 +39,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await userme(request);
   const userProfile = user?.userProfile || null;
-  return json({ userProfile });
+  return Response.json({ userProfile });
 }
 
 const validationSchema = z.object({
@@ -52,7 +53,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const userProfileId = user?.userProfile?.documentId;
   const token = await getUserToken(request);
   const formData = await request.formData();
-  const action = formData.get("_action"); 
+  const action = formData.get("_action");
   let response = null;
 
   const validation = validationSchema.safeParse({
@@ -62,7 +63,7 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   if (!validation.success) {
-    return json({
+    return Response.json({
       data: null,
       formErrors: validation.error.flatten().fieldErrors,
       strapiError: null,
@@ -105,7 +106,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (response?.error) {
-    return json({
+    return Response.json({
       data: null,
       formErrors: null,
       strapiError: response.error,
@@ -117,7 +118,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function OnboardingRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const actionData = useActionData();
+  const actionData = useActionData() as {
+    formErrors: Record<string, string[]>;
+    strapiError: {
+      message: string;
+      name: string;
+      statusCode: number;
+    };
+  };
   const hasProfile = !!loaderData?.userProfile;
   return (
     <div className="h-[calc(100vh-224px)] flex justify-center items-center">
