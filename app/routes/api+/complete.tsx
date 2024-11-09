@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFetcher } from "@remix-run/react";
-import { type LoaderFunctionArgs, json, redirect } from "@remix-run/node";
+import { type LoaderFunctionArgs,redirect } from "@remix-run/node";
 import { userme } from "~/services/auth/userme.server";
 import { cn } from "~/lib/utils";
 import { getUserToken } from "~/services/auth/session.server";
@@ -25,7 +25,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     (lesson: { documentId: string }) => lesson.documentId === documentId
   );
 
-  return json({ isCompleted });
+  return { isCompleted };
 }
 
 export async function action({ request }: LoaderFunctionArgs) {
@@ -60,7 +60,7 @@ export async function action({ request }: LoaderFunctionArgs) {
     );
   }
 
-  return json({ isCompleted: !isCompleted });
+  return { isCompleted: !isCompleted };
 }
 export function LessonStatusIcon({
   documentId,

@@ -1,4 +1,3 @@
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Features } from "~/components/features";
 
@@ -14,7 +13,7 @@ export const meta: MetaFunction = () => {
 };
 
 export function loader() {
-  return json({ data: mockData });
+  return { data: mockData };
 }
 
 export default function Index() {

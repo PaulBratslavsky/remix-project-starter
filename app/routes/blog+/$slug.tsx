@@ -1,4 +1,4 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import {  type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getPostBySlug } from "~/data/loaders";
 import { handleStrapiError } from "~/lib/utils";
@@ -9,7 +9,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const slug = params?.slug;
   const data = await getPostBySlug(slug as string);
   handleStrapiError(data?.error);
-  return json({ data: data.data[0]});
+  return { data: data.data[0]};
 }
 
 export default function SinglePostRoute() {

@@ -4,7 +4,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useActionData, Form, Link } from "@remix-run/react";
 
 import { login } from "~/services/auth/auth.server";
@@ -52,21 +52,21 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   if (!validation.success) {
-    return json({
+    return {
       data: null,
       formErrors: validation.error.flatten().fieldErrors,
       strapiError: null,
-    });
+    };
   }
 
   const response = await login(validation.data as StrapiLoginFormProps);
 
   if (response?.error)
-    return json({
+    return {
       data: null,
       formErrors: null,
       strapiError: response.error,
-    });
+    };
 
   return createUserSession(response.jwt, request);
 }

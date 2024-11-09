@@ -1,6 +1,5 @@
 import type { CourseProps } from "~/types";
 import type { MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { getAllCourses } from "~/data/loaders";
@@ -28,7 +27,7 @@ export async function loader() {
   const PUBLIC_TOKEN = process.env.READ_ONLY_STRAPI_API_TOKEN;
   const data = await getAllCourses(PUBLIC_TOKEN);
   handleStrapiError(data?.error);
-  return json({ headerData: { ...mockData }, courseData: data });
+  return { headerData: { ...mockData }, courseData: data };
 }
 
 

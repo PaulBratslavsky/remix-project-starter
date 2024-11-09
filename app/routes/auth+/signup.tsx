@@ -4,7 +4,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 
 import { useActionData, Link, Form } from "@remix-run/react";
 
@@ -55,21 +55,21 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   if (!validation.success) {
-    return json({
+    return {
       data: null,
       formErrors: validation.error.flatten().fieldErrors,
       strapiError: null,
-    });
+    };
   }
 
   const response = await register(validation.data as StrapiRegisterFormProps);
 
   if (response?.error)
-    return json({
+    return {
       data: null,
       formErrors: null,
       strapiError: response.error,
-    });
+    };
 
 
   return createUserSession(response.jwt, request);
@@ -85,7 +85,7 @@ type StrapiError = StrapiErrorsProps | undefined | null;
 
 export default function SignupRoute() {
   const actionData = useActionData<typeof action>();
-  const githubUrl = getStrapiSocialAuthUrl("github");
+  // const githubUrl = getStrapiSocialAuthUrl("github");
   return (
     <div className="mx-auto max-w-md space-y-6 h-[calc(100vh-224px)] flex justify-center items-center">
       <div className="w-full p-8 rounded">
